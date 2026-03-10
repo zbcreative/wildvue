@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase'
 
 const ANIMAL_DATA = [
   {
+    key: 'lion',
     emoji: '🦁',
     fact: 'Lions are the only cats that live in groups, called prides.',
     scene: (
@@ -43,6 +44,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'leopard',
     emoji: '🐆',
     fact: 'Leopards can carry prey twice their body weight up into trees.',
     scene: (
@@ -76,6 +78,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'giraffe',
     emoji: '🦒',
     fact: "A giraffe's tongue is 18 inches long and dark purple to prevent sunburn.",
     scene: (
@@ -107,6 +110,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'elephant',
     emoji: '🐘',
     fact: "Elephants are the only animals that can't jump, and they don't need to.",
     scene: (
@@ -136,6 +140,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'rhino',
     emoji: '🦏',
     fact: "A rhino's horn is made of keratin, the same material as your fingernails.",
     scene: (
@@ -164,6 +169,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'crocodile',
     emoji: '🐊',
     fact: 'Crocodiles have the strongest bite force of any animal on Earth.',
     scene: (
@@ -195,6 +201,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'eagle',
     emoji: '🦅',
     fact: 'Eagles can spot a rabbit from nearly two miles away.',
     scene: (
@@ -229,6 +236,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'penguin',
     emoji: '🐧',
     fact: 'Penguins propose to their mates with a pebble and stay together for life.',
     scene: (
@@ -260,6 +268,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'shark',
     emoji: '🦈',
     fact: "Sharks are older than trees, having existed for over 450 million years.",
     scene: (
@@ -294,6 +303,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'dolphin',
     emoji: '🐬',
     fact: 'Dolphins have names for each other and call out to specific individuals.',
     scene: (
@@ -325,6 +335,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'parrot',
     emoji: '🦜',
     fact: 'African grey parrots can learn over 1,000 words and understand context.',
     scene: (
@@ -359,6 +370,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'hippo',
     emoji: '🦛',
     fact: 'Hippos secrete a natural sunscreen that also acts as an antibiotic.',
     scene: (
@@ -391,6 +403,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'polar_bear',
     emoji: '🐻‍❄️',
     fact: 'Polar bears have black skin under their white fur to absorb heat.',
     scene: (
@@ -421,6 +434,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'zebra',
     emoji: '🦓',
     fact: "Every zebra's stripe pattern is unique, like a human fingerprint.",
     scene: (
@@ -454,6 +468,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'gorilla',
     emoji: '🦍',
     fact: 'Gorillas share 98.3% of their DNA with humans.',
     scene: (
@@ -483,6 +498,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'flamingo',
     emoji: '🦩',
     fact: 'Flamingos are born white, and their pink color comes entirely from their diet.',
     scene: (
@@ -512,6 +528,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'tiger',
     emoji: '🐅',
     fact: "No two tigers have the same stripe pattern. Each one is completely unique.",
     scene: (
@@ -545,6 +562,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'seal',
     emoji: '🦭',
     fact: 'Seals can slow their heart rate to 4 beats per minute when diving.',
     scene: (
@@ -578,6 +596,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'hedgehog',
     emoji: '🦔',
     fact: 'Hedgehogs are immune to many venoms, including some snake venoms.',
     scene: (
@@ -613,6 +632,7 @@ const ANIMAL_DATA = [
     )
   },
   {
+    key: 'butterfly',
     emoji: '🦋',
     fact: 'Butterflies taste with their feet, using taste sensors on their legs.',
     scene: (
@@ -647,6 +667,35 @@ const ANIMAL_DATA = [
     )
   },
 ]
+
+const animalAttributes: Record<string, { habitat: [string, string], diet: [string, string], status: [string, string] }> = {
+  lion:       { habitat: ['🌍', 'Africa'],     diet: ['🥩', 'Carnivore'],  status: ['⚠️', 'Vulnerable'] },
+  elephant:   { habitat: ['🌍', 'Afr/Asia'],   diet: ['🌿', 'Herbivore'],  status: ['⚠️', 'Vulnerable'] },
+  giraffe:    { habitat: ['🌍', 'Africa'],     diet: ['🌿', 'Herbivore'],  status: ['⚠️', 'Vulnerable'] },
+  penguin:    { habitat: ['🧊', 'Antarctic'],  diet: ['🐟', 'Carnivore'],  status: ['✅', 'Common'] },
+  tiger:      { habitat: ['🌏', 'Asia'],       diet: ['🥩', 'Carnivore'],  status: ['🔴', 'Endangered'] },
+  gorilla:    { habitat: ['🌍', 'Africa'],     diet: ['🌿', 'Herbivore'],  status: ['🔴', 'Endangered'] },
+  panda:      { habitat: ['🌏', 'China'],      diet: ['🎍', 'Herbivore'],  status: ['✅', 'Vulnerable'] },
+  cheetah:    { habitat: ['🌍', 'Africa'],     diet: ['🥩', 'Carnivore'],  status: ['⚠️', 'Vulnerable'] },
+  polar_bear: { habitat: ['🧊', 'Arctic'],     diet: ['🐟', 'Carnivore'],  status: ['⚠️', 'Vulnerable'] },
+  orangutan:  { habitat: ['🌏', 'Borneo'],     diet: ['🍎', 'Omnivore'],   status: ['🔴', 'Endangered'] },
+  hippo:      { habitat: ['🌍', 'Africa'],     diet: ['🌿', 'Herbivore'],  status: ['⚠️', 'Vulnerable'] },
+  leopard:    { habitat: ['🌍', 'Afr/Asia'],   diet: ['🥩', 'Carnivore'],  status: ['⚠️', 'Vulnerable'] },
+  zebra:      { habitat: ['🌍', 'Africa'],     diet: ['🌿', 'Herbivore'],  status: ['✅', 'Common'] },
+  flamingo:   { habitat: ['🌍', 'Worldwide'],  diet: ['🦐', 'Omnivore'],   status: ['✅', 'Common'] },
+  wolf:       { habitat: ['🌲', 'Americas'],   diet: ['🥩', 'Carnivore'],  status: ['✅', 'Common'] },
+  seal:       { habitat: ['🌊', 'Coastal'],    diet: ['🐟', 'Carnivore'],  status: ['✅', 'Common'] },
+  meerkat:    { habitat: ['🌍', 'S. Africa'],  diet: ['🦎', 'Omnivore'],   status: ['✅', 'Common'] },
+  rhino:      { habitat: ['🌍', 'Afr/Asia'],   diet: ['🌿', 'Herbivore'],  status: ['🔴', 'Endangered'] },
+  hedgehog:   { habitat: ['🌿', 'Eur/Asia'],   diet: ['🐛', 'Omnivore'],   status: ['✅', 'Common'] },
+  red_panda:  { habitat: ['🌏', 'Himalayas'],  diet: ['🎍', 'Omnivore'],   status: ['🔴', 'Endangered'] },
+  crocodile:  { habitat: ['🌍', 'Afr/Asia'],   diet: ['🥩', 'Carnivore'],  status: ['✅', 'Common'] },
+  eagle:      { habitat: ['🌎', 'Worldwide'],  diet: ['🥩', 'Carnivore'],  status: ['✅', 'Common'] },
+  shark:      { habitat: ['🌊', 'Ocean'],      diet: ['🥩', 'Carnivore'],  status: ['⚠️', 'Vulnerable'] },
+  dolphin:    { habitat: ['🌊', 'Ocean'],      diet: ['🐟', 'Carnivore'],  status: ['✅', 'Common'] },
+  parrot:     { habitat: ['🌿', 'Tropics'],    diet: ['🍎', 'Omnivore'],   status: ['⚠️', 'Vulnerable'] },
+  butterfly:  { habitat: ['🌎', 'Worldwide'],  diet: ['🌸', 'Herbivore'],  status: ['✅', 'Common'] },
+}
 
 const WILDLIFE_LINES = [
   "Ready to capture the wild?",
@@ -785,17 +834,44 @@ export default function HomePage() {
             <div style={{ fontSize: '124px', lineHeight: 1, filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.5))', textAlign: 'center', width: '100%' }}>
               {animal?.emoji}
             </div>
-            <p style={{ marginTop: '20px', fontSize: '12px', color: 'rgba(250,247,242,0.35)', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '0.02em', marginBottom: '12px' }}>
-              Tap to meet another
-            </p>
-            <p style={{ fontSize: '15px', color: '#FAF5E8', fontFamily: "'Plus Jakarta Sans', sans-serif", textAlign: 'center', lineHeight: 1.6, fontStyle: 'italic', maxWidth: '260px', textShadow: '0 1px 6px rgba(0,0,0,0.6)' }}>
-              {animal?.fact}
-            </p>
+            {animal && animalAttributes[animal.key] && (
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'center', marginTop: '20px' }}>
+                {(['habitat', 'diet', 'status'] as const).map(attr => {
+                  const [emoji, label] = animalAttributes[animal.key][attr]
+                  return (
+                    <div key={attr} style={{
+                      background: 'rgba(0,0,0,0.15)',
+                      border: '1px solid rgba(255,255,255,0.10)',
+                      borderRadius: '12px',
+                      padding: '10px 12px',
+                      width: '72px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}>
+                      <span style={{ fontSize: '20px' }}>{emoji}</span>
+                      <span style={{ fontSize: '10px', color: 'rgba(250,245,232,0.55)', fontWeight: 500, whiteSpace: 'nowrap' }}>{label}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </div>
         </div>
 
         {/* CTAs */}
         <div style={{ padding: '0 24px', flexShrink: 0 }}>
+          <p style={{
+            fontSize: '12px',
+            color: 'rgba(250,245,232,0.35)',
+            textAlign: 'center',
+            marginBottom: '10px',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            letterSpacing: '0.01em'
+          }}>
+            Remove fences, glass &amp; bars from wildlife photos
+          </p>
           <button
             onClick={handleTakePhoto}
             disabled={noCredits}
