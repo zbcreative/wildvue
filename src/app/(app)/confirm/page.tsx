@@ -3,15 +3,30 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import BottomNav from '@/components/BottomNav'
+import { createClient } from '@/lib/supabase'
 
 export default function ConfirmPage() {
   const router = useRouter()
   const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [credits, setCredits] = useState<number | null>(null)
 
   useEffect(() => {
     const url = sessionStorage.getItem('wildvue_pending_image')
-    if (!url) router.push('/home')
-    else setImageUrl(url)
+    if (!url) { router.push('/home'); return }
+    setImageUrl(url)
+
+    const loadCredits = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      const { data } = await supabase
+        .from('credits')
+        .select('remaining')
+        .eq('user_id', user.id)
+        .single()
+      if (data) setCredits(data.remaining)
+    }
+    loadCredits()
   }, [router])
 
   const handleConfirm = () => {
@@ -67,16 +82,23 @@ export default function ConfirmPage() {
       <div style={{ padding: '0 24px', flex: 1 }}>
         <div style={{
           width: '100%',
-          aspectRatio: '4/3',
           borderRadius: '16px',
           overflow: 'hidden',
           marginBottom: '20px',
           background: 'rgba(28,58,34,0.4)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}>
           <img
             src={imageUrl}
             alt="Selected photo"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            style={{
+              width: '100%',
+              maxHeight: '60vh',
+              objectFit: 'contain',
+              borderRadius: '16px',
+            }}
           />
         </div>
 
@@ -106,7 +128,7 @@ export default function ConfirmPage() {
             borderRadius: '100px',
             padding: '6px 12px',
           }}>
-            <span style={{ fontFamily: "'Fraunces', serif", fontSize: '18px', color: '#E8A245', fontWeight: 600 }}>3</span>
+            <span style={{ fontFamily: "'Fraunces', serif", fontSize: '18px', color: '#E8A245', fontWeight: 600 }}>{credits === null ? '...' : credits}</span>
             <span style={{ fontSize: '12px', color: 'rgba(250,247,242,0.5)' }}>left</span>
           </div>
         </div>
