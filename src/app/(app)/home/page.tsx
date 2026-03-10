@@ -1,11 +1,31 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase'
 
 export default function HomePage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
+  const [credits, setCredits] = useState<number | null>(null)
+
+  useEffect(() => {
+    const loadCredits = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) { router.push('/signin'); return }
+      const { data } = await supabase
+        .from('credits')
+        .select('remaining')
+        .eq('user_id', user.id)
+        .single()
+      if (data) {
+        setCredits(data.remaining)
+        sessionStorage.setItem('wildvue_credits', String(data.remaining))
+      }
+    }
+    loadCredits()
+  }, [router])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -70,7 +90,6 @@ export default function HomePage() {
           justifyContent: 'center',
           cursor: 'pointer',
           marginBottom: '20px',
-          transition: 'border-color 0.2s, background 0.2s',
           gap: '12px',
         }}
         onMouseEnter={e => {
@@ -114,7 +133,9 @@ export default function HomePage() {
         fontSize: '13px',
         color: 'rgba(250,247,242,0.6)',
       }}>
-        <span style={{ color: '#E8A245', fontWeight: 700, fontFamily: "'Fraunces', serif", fontSize: '16px' }}>3</span>
+        <span style={{ color: '#E8A245', fontWeight: 700, fontFamily: "'Fraunces', serif", fontSize: '16px' }}>
+          {credits === null ? '...' : credits}
+        </span>
         free cleanups remaining
       </div>
 

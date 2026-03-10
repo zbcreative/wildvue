@@ -33,7 +33,12 @@ export default function ProcessingPage() {
 
         if (data.image) {
           sessionStorage.setItem('wildvue_result_image', data.image)
+          if (data.creditsRemaining !== undefined) {
+            sessionStorage.setItem('wildvue_credits', String(data.creditsRemaining))
+          }
           router.push('/result')
+        } else if (data.error === 'No credits remaining') {
+          router.push('/home?upgrade=true')
         } else {
           console.error('No image returned:', data.error)
           router.push('/home')
