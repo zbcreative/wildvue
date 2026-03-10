@@ -746,7 +746,7 @@ export default function HomePage() {
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '70%', overflow: 'hidden', pointerEvents: 'none', zIndex: 0, opacity: visible ? 1 : 0, transition: 'opacity 0.25s ease' }}>
         {animal?.scene}
         {/* Fade to dark at top */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(to bottom, #0C1A0F, transparent)', pointerEvents: 'none' }}/>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '30%', background: 'linear-gradient(to bottom, #0C1A0F, transparent)', pointerEvents: 'none' }}/>
         {/* Fade to dark at bottom */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(to bottom, transparent, #0C1A0F)', pointerEvents: 'none' }}/>
       </div>
@@ -755,7 +755,7 @@ export default function HomePage() {
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
 
         {/* NAV */}
-        <div style={{ padding: 'max(52px, env(safe-area-inset-top)) 24px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+        <div style={{ padding: '52px 24px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '32px', height: '32px', background: 'rgba(28,58,34,0.8)', borderRadius: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>🦉</div>
             <span style={{ fontFamily: "'Fraunces', serif", fontWeight: 700, fontSize: '28px', letterSpacing: '-0.02em', color: '#FAF7F2' }}>
