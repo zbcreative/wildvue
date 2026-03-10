@@ -879,8 +879,8 @@ export default function HomePage() {
 
         {/* TOP NAV */}
         <div style={{ paddingTop: 'calc(52px + env(safe-area-inset-top))', paddingLeft: '24px', paddingRight: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
-          <span style={{ fontFamily: "'Fraunces', serif", fontWeight: 700, fontSize: '28px', letterSpacing: '-0.02em', color: 'var(--cream)' }}>
-            Wild<em style={{ fontStyle: 'italic', fontWeight: 700, color: 'var(--gold)' }}>vue</em>
+          <span style={{ fontFamily: "'Fraunces', serif", fontWeight: 700, fontSize: '32px', letterSpacing: '-0.02em', color: 'var(--cream)' }}>
+            Wild<em style={{ fontStyle: 'italic', fontWeight: 900, color: 'var(--gold)' }}>vue</em>
           </span>
           <div onClick={() => router.push('/profile')} style={{ width: '34px', height: '34px', borderRadius: '50%', background: 'rgba(90,144,104,0.8)', border: '1.5px solid rgba(232,162,69,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
             <svg viewBox="0 0 24 24" width="18" height="18" stroke="rgba(255,255,255,0.6)" fill="none" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -890,7 +890,7 @@ export default function HomePage() {
         </div>
 
         {/* GREETING ZONE */}
-        <div style={{ padding: '24px 24px 0', flexShrink: 0 }}>
+        <div style={{ padding: '10px 24px 0', flexShrink: 0 }}>
           <p style={{ fontSize: '13px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '6px', textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>
             {timeGreeting}, {firstName}.
           </p>
@@ -908,7 +908,7 @@ export default function HomePage() {
             </div>
             {/* Attribute icon cards */}
             {animal && animalAttributes[animal.key] && (
-              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'center', marginTop: '20px' }}>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'center', marginTop: '36px' }}>
                 {(['habitat', 'diet', 'status'] as const).map(attr => {
                   const [emoji, label] = animalAttributes[animal.key][attr]
                   return (
