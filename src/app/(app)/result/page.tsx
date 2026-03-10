@@ -88,7 +88,7 @@ export default function ResultPage() {
           }}/>
           <div style={{
             position: 'absolute', bottom: '12px', right: '12px',
-            background: 'rgba(58,125,68,0.8)', borderRadius: '6px',
+            background: 'rgba(125,184,140,0.8)', borderRadius: '6px',
             padding: '4px 10px', fontSize: '11px', fontWeight: 600,
             color: 'var(--color-text-primary)', letterSpacing: '0.05em',
           }}>AFTER</div>
@@ -173,7 +173,7 @@ export default function ResultPage() {
         <button onClick={handleDone} style={{
           width: '100%', padding: '14px',
           borderRadius: '14px',
-          border: '1px solid rgba(58,125,68,0.2)',
+          border: '1px solid rgba(125,184,140,0.2)',
           background: 'transparent',
           color: 'rgba(250,247,242,0.5)',
           fontSize: '15px', cursor: 'pointer',

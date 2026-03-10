@@ -59,8 +59,8 @@ export default function ConfirmPage() {
         gap: '12px',
       }}>
         <button onClick={handleCancel} style={{
-          background: 'rgba(28,58,34,0.5)',
-          border: '1px solid rgba(58,125,68,0.2)',
+          background: 'rgba(90,144,104,0.5)',
+          border: '1px solid rgba(125,184,140,0.2)',
           borderRadius: '10px',
           width: '36px', height: '36px',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -85,7 +85,7 @@ export default function ConfirmPage() {
           borderRadius: '16px',
           overflow: 'hidden',
           marginBottom: '20px',
-          background: 'rgba(28,58,34,0.4)',
+          background: 'rgba(90,144,104,0.4)',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -104,8 +104,8 @@ export default function ConfirmPage() {
 
         {/* Credit notice */}
         <div style={{
-          background: 'rgba(28,58,34,0.4)',
-          border: '1px solid rgba(58,125,68,0.2)',
+          background: 'rgba(90,144,104,0.4)',
+          border: '1px solid rgba(125,184,140,0.2)',
           borderRadius: '14px',
           padding: '16px 18px',
           display: 'flex',
@@ -160,7 +160,7 @@ export default function ConfirmPage() {
           width: '100%',
           padding: '14px',
           borderRadius: '14px',
-          border: '1px solid rgba(58,125,68,0.2)',
+          border: '1px solid rgba(125,184,140,0.2)',
           background: 'transparent',
           color: 'rgba(250,247,242,0.5)',
           fontSize: '15px',

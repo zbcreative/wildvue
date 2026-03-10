@@ -757,12 +757,12 @@ export default function HomePage() {
         {/* NAV */}
         <div style={{ padding: '52px 24px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '32px', height: '32px', background: 'rgba(28,58,34,0.8)', borderRadius: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>🦉</div>
+            <div style={{ width: '32px', height: '32px', background: 'rgba(90,144,104,0.8)', borderRadius: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>🦉</div>
             <span style={{ fontFamily: "'Fraunces', serif", fontWeight: 700, fontSize: '28px', letterSpacing: '-0.02em', color: 'var(--color-text-primary)' }}>
               Wild<em style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--color-accent)' }}>vue</em>
             </span>
           </div>
-          <div onClick={() => router.push('/profile')} style={{ width: '34px', height: '34px', borderRadius: '50%', background: 'rgba(28,58,34,0.8)', border: '1.5px solid rgba(232,162,69,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+          <div onClick={() => router.push('/profile')} style={{ width: '34px', height: '34px', borderRadius: '50%', background: 'rgba(90,144,104,0.8)', border: '1.5px solid rgba(232,162,69,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
             <svg viewBox="0 0 24 24" width="18" height="18" stroke="rgba(255,255,255,0.6)" fill="none" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
             </svg>
@@ -788,7 +788,7 @@ export default function HomePage() {
             <p style={{ marginTop: '20px', fontSize: '12px', color: 'rgba(250,247,242,0.35)', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '0.02em', marginBottom: '12px' }}>
               Tap to meet another
             </p>
-            <p style={{ fontSize: '15px', color: 'rgba(250,247,242,0.6)', fontFamily: "'Plus Jakarta Sans', sans-serif", textAlign: 'center', lineHeight: 1.6, fontStyle: 'italic', maxWidth: '260px', textShadow: '0 1px 6px rgba(0,0,0,0.6)' }}>
+            <p style={{ fontSize: '15px', color: '#FAF5E8', fontFamily: "'Plus Jakarta Sans', sans-serif", textAlign: 'center', lineHeight: 1.6, fontStyle: 'italic', maxWidth: '260px', textShadow: '0 1px 6px rgba(0,0,0,0.6)' }}>
               {animal?.fact}
             </p>
           </div>
@@ -834,7 +834,7 @@ export default function HomePage() {
                 <svg viewBox="0 0 24 24" width="15" height="15" stroke="rgba(255,255,255,0.4)" fill="none" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
                 </svg>
-                <span style={{ fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.45)' }}>
+                <span style={{ fontSize: '13px', fontWeight: 500, color: '#FAF5E8' }}>
                   Choose from camera roll
                 </span>
               </div>

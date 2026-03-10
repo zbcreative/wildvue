@@ -72,7 +72,7 @@ export default function ProcessingPage() {
         borderRadius: '24px',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         marginBottom: '32px',
-        border: '1px solid rgba(58,125,68,0.3)',
+        border: '1px solid rgba(125,184,140,0.3)',
         animation: 'pulse 1.8s ease-in-out infinite',
       }}>
         <svg width="44" height="44" viewBox="0 0 24 24" fill="var(--color-accent)">
