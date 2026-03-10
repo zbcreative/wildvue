@@ -150,14 +150,26 @@ export default function ResultPage() {
         flexDirection: 'column',
         gap: '10px',
       }}>
-        <button style={{
-          width: '100%', padding: '16px',
-          borderRadius: '14px', border: 'none',
-          background: '#E8A245', color: '#0C1A0F',
-          fontSize: '16px', fontWeight: 700,
-          cursor: 'pointer',
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-        }}>
+        <button
+          onClick={async () => {
+            const resultUrl = sessionStorage.getItem('wildvue_result_image')
+            if (!resultUrl) return
+            const link = document.createElement('a')
+            link.href = resultUrl
+            link.download = `wildvue-${Date.now()}.jpg`
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+          }}
+          style={{
+            width: '100%', padding: '16px',
+            borderRadius: '14px', border: 'none',
+            background: '#E8A245', color: '#0C1A0F',
+            fontSize: '16px', fontWeight: 700,
+            cursor: 'pointer',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}
+        >
           Save to camera roll ↓
         </button>
         <button onClick={handleDone} style={{
