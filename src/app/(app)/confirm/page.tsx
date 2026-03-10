@@ -11,7 +11,7 @@ export default function ConfirmPage() {
   const [credits, setCredits] = useState<number | null>(null)
 
   useEffect(() => {
-    const url = sessionStorage.getItem('wildvue_pending_image')
+    const url = sessionStorage.getItem('wildvue_selected_image')
     if (!url) { router.push('/home'); return }
     setImageUrl(url)
 
@@ -34,7 +34,7 @@ export default function ConfirmPage() {
   }
 
   const handleCancel = () => {
-    sessionStorage.removeItem('wildvue_pending_image')
+    sessionStorage.removeItem('wildvue_selected_image')
     router.push('/home')
   }
 
