@@ -68,13 +68,16 @@ export default function ResultPage() {
         <div
           style={{
             width: '100%',
-            aspectRatio: '4/3',
+            maxHeight: '60vh',
             borderRadius: '16px',
             overflow: 'hidden',
             position: 'relative',
             cursor: 'ew-resize',
             userSelect: 'none',
             background: 'rgba(28,58,34,0.4)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
           onMouseDown={() => setIsDragging(true)}
           onMouseUp={() => setIsDragging(false)}
@@ -89,7 +92,10 @@ export default function ResultPage() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <img src={resultUrl ?? undefined} alt="After" style={{
-              width: '100%', height: '100%', objectFit: 'cover',
+              width: '100%',
+              maxHeight: '60vh',
+              objectFit: 'contain',
+              borderRadius: '16px',
               filter: 'contrast(1.05) saturate(1.1)',
             }}/>
             <div style={{
@@ -106,7 +112,10 @@ export default function ResultPage() {
             clipPath: `inset(0 ${100 - sliderPos}% 0 0)`,
           }}>
             <img src={imageUrl} alt="Before" style={{
-              width: '100%', height: '100%', objectFit: 'cover',
+              width: '100%',
+              maxHeight: '60vh',
+              objectFit: 'contain',
+              borderRadius: '16px',
             }}/>
             <div style={{
               position: 'absolute', bottom: '12px', left: '12px',
