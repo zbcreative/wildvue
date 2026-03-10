@@ -10,7 +10,7 @@ const ANIMAL_DATA = [
     emoji: '🦁',
     fact: 'Lions are the only cats that live in groups, called prides.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-lion" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#C8620A"/>
@@ -48,7 +48,7 @@ const ANIMAL_DATA = [
     emoji: '🐆',
     fact: 'Leopards can carry prey twice their body weight up into trees.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-leopard" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#051A08"/>
@@ -82,7 +82,7 @@ const ANIMAL_DATA = [
     emoji: '🦒',
     fact: "A giraffe's tongue is 18 inches long and dark purple to prevent sunburn.",
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-giraffe" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#C84A10"/>
@@ -114,7 +114,7 @@ const ANIMAL_DATA = [
     emoji: '🐘',
     fact: "Elephants are the only animals that can't jump, and they don't need to.",
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-elephant" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#8A5A3A"/>
@@ -144,7 +144,7 @@ const ANIMAL_DATA = [
     emoji: '🦏',
     fact: "A rhino's horn is made of keratin, the same material as your fingernails.",
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-rhino" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#3A3A30"/>
@@ -173,7 +173,7 @@ const ANIMAL_DATA = [
     emoji: '🐊',
     fact: 'Crocodiles have the strongest bite force of any animal on Earth.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-croc" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#051A08"/>
@@ -205,7 +205,7 @@ const ANIMAL_DATA = [
     emoji: '🦅',
     fact: 'Eagles can spot a rabbit from nearly two miles away.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-eagle" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#071828"/>
@@ -240,7 +240,7 @@ const ANIMAL_DATA = [
     emoji: '🐧',
     fact: 'Penguins propose to their mates with a pebble and stay together for life.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-penguin" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#080E18"/>
@@ -272,7 +272,7 @@ const ANIMAL_DATA = [
     emoji: '🦈',
     fact: "Sharks are older than trees, having existed for over 450 million years.",
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-shark" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#030810"/>
@@ -307,7 +307,7 @@ const ANIMAL_DATA = [
     emoji: '🐬',
     fact: 'Dolphins have names for each other and call out to specific individuals.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-dolphin" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#0A3A5A"/>
@@ -339,7 +339,7 @@ const ANIMAL_DATA = [
     emoji: '🦜',
     fact: 'African grey parrots can learn over 1,000 words and understand context.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-parrot" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#051808"/>
@@ -374,7 +374,7 @@ const ANIMAL_DATA = [
     emoji: '🦛',
     fact: 'Hippos secrete a natural sunscreen that also acts as an antibiotic.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-hippo" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#0A2A3A"/>
@@ -407,7 +407,7 @@ const ANIMAL_DATA = [
     emoji: '🐻‍❄️',
     fact: 'Polar bears have black skin under their white fur to absorb heat.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-polarbear" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#050A14"/>
@@ -438,7 +438,7 @@ const ANIMAL_DATA = [
     emoji: '🦓',
     fact: "Every zebra's stripe pattern is unique, like a human fingerprint.",
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-zebra" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#A03010"/>
@@ -472,7 +472,7 @@ const ANIMAL_DATA = [
     emoji: '🦍',
     fact: 'Gorillas share 98.3% of their DNA with humans.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-gorilla" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#050F08"/>
@@ -502,7 +502,7 @@ const ANIMAL_DATA = [
     emoji: '🦩',
     fact: 'Flamingos are born white, and their pink color comes entirely from their diet.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-flamingo" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#4A0A28"/>
@@ -532,7 +532,7 @@ const ANIMAL_DATA = [
     emoji: '🐅',
     fact: "No two tigers have the same stripe pattern. Each one is completely unique.",
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-tiger" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#1A0A02"/>
@@ -566,7 +566,7 @@ const ANIMAL_DATA = [
     emoji: '🦭',
     fact: 'Seals can slow their heart rate to 4 beats per minute when diving.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-seal" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#080E18"/>
@@ -600,7 +600,7 @@ const ANIMAL_DATA = [
     emoji: '🦔',
     fact: 'Hedgehogs are immune to many venoms, including some snake venoms.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-hedgehog" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#100A04"/>
@@ -636,7 +636,7 @@ const ANIMAL_DATA = [
     emoji: '🦋',
     fact: 'Butterflies taste with their feet, using taste sensors on their legs.',
     scene: (
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
         <defs>
           <linearGradient id="sky-butterfly" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#100A1E"/>
@@ -792,19 +792,19 @@ export default function HomePage() {
     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 72px)', background: 'var(--color-bg-primary)', overflow: 'hidden' }}>
 
       {/* BIOME SCENE BACKGROUND */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '70%', overflow: 'hidden', pointerEvents: 'none', zIndex: 0, opacity: visible ? 1 : 0, transition: 'opacity 0.25s ease' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 'calc(100% - 290px)', overflow: 'hidden', pointerEvents: 'none', zIndex: 0, opacity: visible ? 1 : 0, transition: 'opacity 0.25s ease' }}>
         {animal?.scene}
-        {/* Fade to dark at top */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '30%', background: 'linear-gradient(to bottom, var(--color-bg-primary), transparent)', pointerEvents: 'none' }}/>
         {/* Fade to dark at bottom */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(to bottom, transparent, var(--color-bg-primary))', pointerEvents: 'none' }}/>
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%', background: 'linear-gradient(to bottom, transparent, var(--color-bg-primary))', pointerEvents: 'none' }}/>
+        {/* Hard floor — consistent break line across all biomes */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '22%', background: 'var(--color-bg-primary)', pointerEvents: 'none' }}/>
       </div>
 
       {/* CONTENT */}
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
 
         {/* NAV */}
-        <div style={{ padding: '52px 24px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+        <div style={{ paddingTop: 'calc(52px + env(safe-area-inset-top))', paddingLeft: '24px', paddingRight: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '32px', height: '32px', background: 'rgba(90,144,104,0.8)', borderRadius: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>🦉</div>
             <span style={{ fontFamily: "'Fraunces', serif", fontWeight: 700, fontSize: '28px', letterSpacing: '-0.02em', color: 'var(--color-text-primary)' }}>
@@ -831,33 +831,37 @@ export default function HomePage() {
         {/* ANIMAL MINI GAME */}
         <div onClick={shuffleAnimal} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', userSelect: 'none', padding: '0 32px', marginTop: '-24px' }}>
           <div style={{ opacity: visible ? 1 : 0, transition: 'opacity 0.25s ease', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-            <div style={{ fontSize: '124px', lineHeight: 1, filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.5))', textAlign: 'center', width: '100%' }}>
+            <div style={{ fontSize: '144px', lineHeight: 1, filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.5))', textAlign: 'center', width: '100%' }}>
               {animal?.emoji}
             </div>
-            {animal && animalAttributes[animal.key] && (
-              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'center', marginTop: '20px' }}>
-                {(['habitat', 'diet', 'status'] as const).map(attr => {
-                  const [emoji, label] = animalAttributes[animal.key][attr]
-                  return (
-                    <div key={attr} style={{
-                      background: 'rgba(0,0,0,0.15)',
-                      border: '1px solid rgba(255,255,255,0.10)',
-                      borderRadius: '12px',
-                      padding: '10px 12px',
-                      width: '72px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: '4px',
-                    }}>
-                      <span style={{ fontSize: '20px' }}>{emoji}</span>
-                      <span style={{ fontSize: '10px', color: 'rgba(250,245,232,0.55)', fontWeight: 500, whiteSpace: 'nowrap' }}>{label}</span>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
           </div>
+        </div>
+
+        {/* ATTRIBUTE CARDS */}
+        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'center', paddingTop: '16px', paddingBottom: '12px', transform: 'translateY(-40px)', opacity: visible ? 1 : 0, transition: 'opacity 0.25s ease' }}>
+          {animal && animalAttributes[animal.key] && (
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'center' }}>
+              {(['habitat', 'diet', 'status'] as const).map(attr => {
+                const [emoji, label] = animalAttributes[animal.key][attr]
+                return (
+                  <div key={attr} style={{
+                    background: 'rgba(0,0,0,0.15)',
+                    border: '1px solid rgba(255,255,255,0.10)',
+                    borderRadius: '12px',
+                    padding: '10px 12px',
+                    width: '72px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}>
+                    <span style={{ fontSize: '20px' }}>{emoji}</span>
+                    <span style={{ fontSize: '10px', color: 'rgba(250,245,232,0.55)', fontWeight: 500, whiteSpace: 'nowrap' }}>{label}</span>
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </div>
 
         {/* CTAs */}
