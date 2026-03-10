@@ -43,7 +43,7 @@ export default function ResultPage() {
   return (
     <main style={{
       minHeight: '100vh',
-      background: 'var(--color-bg-primary)',
+      background: 'var(--sage)',
       display: 'flex',
       flexDirection: 'column',
       maxWidth: '430px',
@@ -56,7 +56,7 @@ export default function ResultPage() {
         <h1 style={{
           fontFamily: "'Fraunces', serif",
           fontSize: '24px', fontWeight: 600,
-          color: 'var(--color-text-primary)', marginBottom: '4px',
+          color: 'var(--cream)', marginBottom: '4px',
         }}>Done! ✨</h1>
         <p style={{ fontSize: '14px', color: 'rgba(250,247,242,0.5)' }}>
           Drag to compare before and after
@@ -90,7 +90,7 @@ export default function ResultPage() {
             position: 'absolute', bottom: '12px', right: '12px',
             background: 'rgba(125,184,140,0.8)', borderRadius: '6px',
             padding: '4px 10px', fontSize: '11px', fontWeight: 600,
-            color: 'var(--color-text-primary)', letterSpacing: '0.05em',
+            color: 'var(--cream)', letterSpacing: '0.05em',
           }}>AFTER</div>
 
           {/* Before (clips to sliderPos) */}
@@ -110,7 +110,7 @@ export default function ResultPage() {
               position: 'absolute', bottom: '12px', left: '12px',
               background: 'rgba(0,0,0,0.5)', borderRadius: '6px',
               padding: '4px 10px', fontSize: '11px', fontWeight: 600,
-            color: 'var(--color-text-primary)', letterSpacing: '0.05em',
+            color: 'var(--cream)', letterSpacing: '0.05em',
           }}>BEFORE</div>
           </div>
 
@@ -119,7 +119,7 @@ export default function ResultPage() {
             position: 'absolute', top: 0, bottom: 0,
             left: `${sliderPos}%`,
             width: '2px',
-            background: 'var(--color-accent)',
+            background: 'var(--gold)',
             transform: 'translateX(-50%)',
             pointerEvents: 'none',
           }}>
@@ -128,12 +128,12 @@ export default function ResultPage() {
               position: 'absolute', top: '50%', left: '50%',
               transform: 'translate(-50%, -50%)',
               width: '36px', height: '36px',
-              background: 'var(--color-accent)',
+              background: 'var(--gold)',
               borderRadius: '50%',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
             }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-bg-primary)" strokeWidth="2.5" strokeLinecap="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" strokeWidth="2.5" strokeLinecap="round">
                 <path d="M8 12H16M8 12L5 9M8 12L5 15M16 12L19 9M16 12L19 15"/>
               </svg>
             </div>
@@ -162,7 +162,7 @@ export default function ResultPage() {
           style={{
             width: '100%', padding: '16px',
             borderRadius: '14px', border: 'none',
-            background: 'var(--color-accent)', color: 'var(--color-bg-primary)',
+            background: 'var(--gold)', color: 'var(--sage)',
             fontSize: '16px', fontWeight: 700,
             cursor: 'pointer',
             fontFamily: "'Plus Jakarta Sans', sans-serif",

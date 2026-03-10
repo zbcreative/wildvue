@@ -43,7 +43,7 @@ export default function ConfirmPage() {
   return (
     <main style={{
       minHeight: '100vh',
-      background: 'var(--color-bg-primary)',
+      background: 'var(--sage)',
       display: 'flex',
       flexDirection: 'column',
       maxWidth: '430px',
@@ -74,7 +74,7 @@ export default function ConfirmPage() {
         <h1 style={{
           fontFamily: "'Fraunces', serif",
           fontSize: '22px', fontWeight: 600,
-          color: 'var(--color-text-primary)',
+          color: 'var(--cream)',
         }}>Confirm cleanup</h1>
       </div>
 
@@ -114,7 +114,7 @@ export default function ConfirmPage() {
           marginBottom: '12px',
         }}>
           <div>
-            <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: '2px' }}>
+            <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--cream)', marginBottom: '2px' }}>
               1 cleanup credit
             </div>
             <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.5)' }}>
@@ -128,7 +128,7 @@ export default function ConfirmPage() {
             borderRadius: '100px',
             padding: '6px 12px',
           }}>
-            <span style={{ fontFamily: "'Fraunces', serif", fontSize: '18px', color: 'var(--color-accent)', fontWeight: 600 }}>{credits === null ? '...' : credits}</span>
+            <span style={{ fontFamily: "'Fraunces', serif", fontSize: '18px', color: 'var(--gold)', fontWeight: 600 }}>{credits === null ? '...' : credits}</span>
             <span style={{ fontSize: '12px', color: 'rgba(250,247,242,0.5)' }}>left</span>
           </div>
         </div>
@@ -146,8 +146,8 @@ export default function ConfirmPage() {
           padding: '16px',
           borderRadius: '14px',
           border: 'none',
-          background: 'var(--color-accent)',
-          color: 'var(--color-bg-primary)',
+          background: 'var(--gold)',
+          color: 'var(--sage)',
           fontSize: '16px',
           fontWeight: 700,
           cursor: 'pointer',

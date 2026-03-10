@@ -4,7 +4,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'var(--color-bg-primary)',
+      background: 'var(--sage)',
       fontFamily: "'Plus Jakarta Sans', sans-serif",
       paddingBottom: '72px',
     }}>

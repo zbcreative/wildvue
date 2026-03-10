@@ -4,14 +4,13 @@
   --background: #ffffff;
   --foreground: #171717;
 
-  --color-bg-primary:     #4A7C59;
-  --color-bg-surface:     #5A9068;
-  --color-bg-elevated:    #6BA07A;
-  --color-border:         #7DB88C;
-  --color-accent:         #E8D5A3;
-  --color-accent-light:   #F0E4C0;
-  --color-text-primary:   #FAF5E8;
-  --color-text-on-accent: #1A2E1E;
+  --sage:    #4A7C59;
+  --surface: #5A9068;
+  --elev:    #6BA07A;
+  --border:  #7DB88C;
+  --gold:    #E8D5A3;
+  --cream:   #FAF5E8;
+  --dark:    #1A2E1E;
 }
 
 @theme inline {
