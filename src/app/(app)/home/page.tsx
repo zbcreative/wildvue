@@ -14,7 +14,7 @@ const ANIMAL_DATA = [
           <linearGradient id="sky-lion" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#C8620A"/>
             <stop offset="60%" stopColor="#E8952A"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-lion)"/>
@@ -37,8 +37,8 @@ const ANIMAL_DATA = [
             <line x1={x+10} y1="290" x2={x+7} y2="272" stroke="#3A2005" strokeWidth="2" opacity="0.6"/>
           </g>
         ))}
-        <rect width="400" height="340" fill="linear-gradient(to bottom, transparent 60%, #0C1A0F 100%)" opacity="0"/>
-        <rect y="240" width="400" height="100" fill="#0C1A0F" opacity="0.7"/>
+        <rect width="400" height="340" fill="linear-gradient(to bottom, transparent 60%, var(--color-bg-primary) 100%)" opacity="0"/>
+        <rect y="240" width="400" height="100" fill="var(--color-bg-primary)" opacity="0.7"/>
       </svg>
     )
   },
@@ -51,7 +51,7 @@ const ANIMAL_DATA = [
           <linearGradient id="sky-leopard" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#051A08"/>
             <stop offset="50%" stopColor="#0A2A10"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-leopard)"/>
@@ -71,7 +71,7 @@ const ANIMAL_DATA = [
         <ellipse cx="60" cy="300" rx="55" ry="25" fill="#0D3010" opacity="0.8"/>
         <ellipse cx="340" cy="310" rx="60" ry="22" fill="#0D3010" opacity="0.8"/>
         <ellipse cx="200" cy="320" rx="80" ry="20" fill="#082808" opacity="0.7"/>
-        <rect y="280" width="400" height="60" fill="#0C1A0F" opacity="0.75"/>
+        <rect y="280" width="400" height="60" fill="var(--color-bg-primary)" opacity="0.75"/>
       </svg>
     )
   },
@@ -85,7 +85,7 @@ const ANIMAL_DATA = [
             <stop offset="0%" stopColor="#C84A10"/>
             <stop offset="40%" stopColor="#E8702A"/>
             <stop offset="70%" stopColor="#F0A050"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-giraffe)"/>
@@ -102,7 +102,7 @@ const ANIMAL_DATA = [
         <ellipse cx="293" cy="180" rx="25" ry="9" fill="#1A3008" opacity="0.9"/>
         <rect x="175" y="195" width="4" height="40" fill="#2A1205"/>
         <ellipse cx="177" cy="191" rx="20" ry="8" fill="#1A3008" opacity="0.85"/>
-        <rect y="270" width="400" height="70" fill="#0C1A0F" opacity="0.8"/>
+        <rect y="270" width="400" height="70" fill="var(--color-bg-primary)" opacity="0.8"/>
       </svg>
     )
   },
@@ -115,7 +115,7 @@ const ANIMAL_DATA = [
           <linearGradient id="sky-elephant" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#8A5A3A"/>
             <stop offset="50%" stopColor="#B87A50"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-elephant)"/>
@@ -131,7 +131,7 @@ const ANIMAL_DATA = [
         <polygon points="0,220 80,160 160,220" fill="#6A4020" opacity="0.5"/>
         <polygon points="120,220 220,140 320,220" fill="#7A4A28" opacity="0.4"/>
         <polygon points="280,220 360,155 440,220" fill="#6A4020" opacity="0.5"/>
-        <rect y="270" width="400" height="70" fill="#0C1A0F" opacity="0.8"/>
+        <rect y="270" width="400" height="70" fill="var(--color-bg-primary)" opacity="0.8"/>
       </svg>
     )
   },
@@ -144,7 +144,7 @@ const ANIMAL_DATA = [
           <linearGradient id="sky-rhino" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#3A3A30"/>
             <stop offset="50%" stopColor="#5A5A48"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-rhino)"/>
@@ -159,7 +159,7 @@ const ANIMAL_DATA = [
             <ellipse cx={x+3} cy="207" rx="4" ry="10" fill="#5A4A10" opacity="0.7"/>
           </g>
         ))}
-        <rect y="280" width="400" height="60" fill="#0C1A0F" opacity="0.8"/>
+        <rect y="280" width="400" height="60" fill="var(--color-bg-primary)" opacity="0.8"/>
       </svg>
     )
   },
@@ -172,7 +172,7 @@ const ANIMAL_DATA = [
           <linearGradient id="sky-croc" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#051A08"/>
             <stop offset="40%" stopColor="#082A10"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-croc)"/>
@@ -190,7 +190,7 @@ const ANIMAL_DATA = [
         <path d="M390 140 Q360 175 380 215" stroke="#1A2A10" strokeWidth="5" fill="none" opacity="0.6"/>
         {/* Fog */}
         <ellipse cx="200" cy="220" rx="220" ry="30" fill="#0A3A20" opacity="0.3"/>
-        <rect y="275" width="400" height="65" fill="#0C1A0F" opacity="0.85"/>
+        <rect y="275" width="400" height="65" fill="var(--color-bg-primary)" opacity="0.85"/>
       </svg>
     )
   },
@@ -204,7 +204,7 @@ const ANIMAL_DATA = [
             <stop offset="0%" stopColor="#071828"/>
             <stop offset="40%" stopColor="#0E2A48"/>
             <stop offset="70%" stopColor="#1A4A6A"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-eagle)"/>
@@ -224,7 +224,7 @@ const ANIMAL_DATA = [
         <polygon points="70,160 85,185 55,185" fill="white" opacity="0.3"/>
         <polygon points="170,130 185,160 155,160" fill="white" opacity="0.3"/>
         <polygon points="300,145 315,172 285,172" fill="white" opacity="0.3"/>
-        <rect y="265" width="400" height="75" fill="#0C1A0F" opacity="0.85"/>
+        <rect y="265" width="400" height="75" fill="var(--color-bg-primary)" opacity="0.85"/>
       </svg>
     )
   },
@@ -238,7 +238,7 @@ const ANIMAL_DATA = [
             <stop offset="0%" stopColor="#080E18"/>
             <stop offset="30%" stopColor="#0E1A2E"/>
             <stop offset="60%" stopColor="#1A2A3A"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-penguin)"/>
@@ -255,7 +255,7 @@ const ANIMAL_DATA = [
         <ellipse cx="200" cy="256" rx="220" ry="12" fill="#1A3A5A" opacity="0.4"/>
         {/* Snow ground */}
         <ellipse cx="200" cy="260" rx="230" ry="20" fill="#C8E0F0" opacity="0.15"/>
-        <rect y="270" width="400" height="70" fill="#0C1A0F" opacity="0.8"/>
+        <rect y="270" width="400" height="70" fill="var(--color-bg-primary)" opacity="0.8"/>
       </svg>
     )
   },
@@ -268,7 +268,7 @@ const ANIMAL_DATA = [
           <linearGradient id="sky-shark" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#030810"/>
             <stop offset="40%" stopColor="#060E1E"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-shark)"/>
@@ -289,7 +289,7 @@ const ANIMAL_DATA = [
         <path d="M80 340 Q95 290 80 240 Q92 195 82 150" stroke="#0A3A18" strokeWidth="4" fill="none" opacity="0.5"/>
         {/* Deep darkness at bottom */}
         <rect y="260" width="400" height="80" fill="#030810" opacity="0.85"/>
-        <rect y="290" width="400" height="50" fill="#0C1A0F" opacity="0.9"/>
+        <rect y="290" width="400" height="50" fill="var(--color-bg-primary)" opacity="0.9"/>
       </svg>
     )
   },
@@ -303,7 +303,7 @@ const ANIMAL_DATA = [
             <stop offset="0%" stopColor="#0A3A5A"/>
             <stop offset="40%" stopColor="#1A6A8A"/>
             <stop offset="70%" stopColor="#2A8AAA"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-dolphin)"/>
@@ -320,7 +320,7 @@ const ANIMAL_DATA = [
         {[60,120,200,280,340].map((x, i) => (
           <ellipse key={i} cx={x} cy={245} rx="15" ry="3" fill="#FFE87A" opacity="0.12"/>
         ))}
-        <rect y="270" width="400" height="70" fill="#0C1A0F" opacity="0.75"/>
+        <rect y="270" width="400" height="70" fill="var(--color-bg-primary)" opacity="0.75"/>
       </svg>
     )
   },
@@ -333,7 +333,7 @@ const ANIMAL_DATA = [
           <linearGradient id="sky-parrot" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#051808"/>
             <stop offset="40%" stopColor="#0A2A10"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-parrot)"/>
@@ -354,7 +354,7 @@ const ANIMAL_DATA = [
         {/* Ground ferns */}
         <ellipse cx="50" cy="305" rx="60" ry="22" fill="#0A3A10" opacity="0.85"/>
         <ellipse cx="350" cy="310" rx="65" ry="20" fill="#0A3A10" opacity="0.85"/>
-        <rect y="285" width="400" height="55" fill="#0C1A0F" opacity="0.8"/>
+        <rect y="285" width="400" height="55" fill="var(--color-bg-primary)" opacity="0.8"/>
       </svg>
     )
   },
@@ -367,7 +367,7 @@ const ANIMAL_DATA = [
           <linearGradient id="sky-hippo" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#0A2A3A"/>
             <stop offset="50%" stopColor="#154A5A"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-hippo)"/>
@@ -386,7 +386,7 @@ const ANIMAL_DATA = [
         ))}
         {/* Bank */}
         <ellipse cx="200" cy="215" rx="230" ry="20" fill="#1A3A18" opacity="0.5"/>
-        <rect y="275" width="400" height="65" fill="#0C1A0F" opacity="0.8"/>
+        <rect y="275" width="400" height="65" fill="var(--color-bg-primary)" opacity="0.8"/>
       </svg>
     )
   },
@@ -400,7 +400,7 @@ const ANIMAL_DATA = [
             <stop offset="0%" stopColor="#050A14"/>
             <stop offset="30%" stopColor="#0A1228"/>
             <stop offset="65%" stopColor="#0E1A30"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-polarbear)"/>
@@ -416,7 +416,7 @@ const ANIMAL_DATA = [
         <ellipse cx="200" cy="265" rx="240" ry="35" fill="#B8D0E8" opacity="0.2"/>
         <ellipse cx="80" cy="275" rx="120" ry="25" fill="#C8E0F0" opacity="0.15"/>
         <ellipse cx="330" cy="270" rx="100" ry="22" fill="#C8E0F0" opacity="0.15"/>
-        <rect y="265" width="400" height="75" fill="#0C1A0F" opacity="0.82"/>
+        <rect y="265" width="400" height="75" fill="var(--color-bg-primary)" opacity="0.82"/>
       </svg>
     )
   },
@@ -430,7 +430,7 @@ const ANIMAL_DATA = [
             <stop offset="0%" stopColor="#A03010"/>
             <stop offset="35%" stopColor="#C85A20"/>
             <stop offset="65%" stopColor="#E88A50"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-zebra)"/>
@@ -449,7 +449,7 @@ const ANIMAL_DATA = [
         <ellipse cx="52" cy="185" rx="25" ry="9" fill="#0F2808" opacity="0.9"/>
         <rect x="310" y="200" width="4" height="55" fill="#1A0A02"/>
         <ellipse cx="312" cy="196" rx="20" ry="8" fill="#0F2808" opacity="0.9"/>
-        <rect y="272" width="400" height="68" fill="#0C1A0F" opacity="0.82"/>
+        <rect y="272" width="400" height="68" fill="var(--color-bg-primary)" opacity="0.82"/>
       </svg>
     )
   },
@@ -462,7 +462,7 @@ const ANIMAL_DATA = [
           <linearGradient id="sky-gorilla" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#050F08"/>
             <stop offset="40%" stopColor="#081808"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-gorilla)"/>
@@ -478,7 +478,7 @@ const ANIMAL_DATA = [
         <ellipse cx="60" cy="295" rx="70" ry="25" fill="#0A3010" opacity="0.85"/>
         <ellipse cx="340" cy="300" rx="65" ry="22" fill="#0A3010" opacity="0.85"/>
         <ellipse cx="200" cy="305" rx="85" ry="20" fill="#061E08" opacity="0.8"/>
-        <rect y="280" width="400" height="60" fill="#0C1A0F" opacity="0.85"/>
+        <rect y="280" width="400" height="60" fill="var(--color-bg-primary)" opacity="0.85"/>
       </svg>
     )
   },
@@ -492,7 +492,7 @@ const ANIMAL_DATA = [
             <stop offset="0%" stopColor="#4A0A28"/>
             <stop offset="35%" stopColor="#8A1A40"/>
             <stop offset="65%" stopColor="#C84A6A"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-flamingo)"/>
@@ -507,7 +507,7 @@ const ANIMAL_DATA = [
         ))}
         {/* Horizon line */}
         <line x1="0" y1="230" x2="400" y2="230" stroke="#FF6A8A" strokeWidth="1" opacity="0.2"/>
-        <rect y="268" width="400" height="72" fill="#0C1A0F" opacity="0.82"/>
+        <rect y="268" width="400" height="72" fill="var(--color-bg-primary)" opacity="0.82"/>
       </svg>
     )
   },
@@ -520,7 +520,7 @@ const ANIMAL_DATA = [
           <linearGradient id="sky-tiger" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#1A0A02"/>
             <stop offset="40%" stopColor="#2A1205"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-tiger)"/>
@@ -540,7 +540,7 @@ const ANIMAL_DATA = [
         <line x1="180" y1="0" x2="150" y2="340" stroke="#E8902A" strokeWidth="30" opacity="0.04"/>
         {/* Ground shadows */}
         <ellipse cx="200" cy="295" rx="220" ry="30" fill="#0A1A05" opacity="0.8"/>
-        <rect y="275" width="400" height="65" fill="#0C1A0F" opacity="0.85"/>
+        <rect y="275" width="400" height="65" fill="var(--color-bg-primary)" opacity="0.85"/>
       </svg>
     )
   },
@@ -554,7 +554,7 @@ const ANIMAL_DATA = [
             <stop offset="0%" stopColor="#080E18"/>
             <stop offset="40%" stopColor="#101828"/>
             <stop offset="70%" stopColor="#182438"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-seal)"/>
@@ -573,7 +573,7 @@ const ANIMAL_DATA = [
         {[40,90,150,210,260,310,370].map((x, i) => (
           <circle key={i} cx={x} cy={[20,35,15,28,18,35,22][i]} r="1" fill="white" opacity="0.5"/>
         ))}
-        <rect y="272" width="400" height="68" fill="#0C1A0F" opacity="0.82"/>
+        <rect y="272" width="400" height="68" fill="var(--color-bg-primary)" opacity="0.82"/>
       </svg>
     )
   },
@@ -586,7 +586,7 @@ const ANIMAL_DATA = [
           <linearGradient id="sky-hedgehog" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#100A04"/>
             <stop offset="40%" stopColor="#1E1208"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-hedgehog)"/>
@@ -608,7 +608,7 @@ const ANIMAL_DATA = [
         <rect x="278" y="278" width="3" height="10" fill="#C0A070" opacity="0.7"/>
         {/* Ground moss */}
         <ellipse cx="200" cy="295" rx="220" ry="22" fill="#1A2A08" opacity="0.6"/>
-        <rect y="278" width="400" height="62" fill="#0C1A0F" opacity="0.82"/>
+        <rect y="278" width="400" height="62" fill="var(--color-bg-primary)" opacity="0.82"/>
       </svg>
     )
   },
@@ -622,7 +622,7 @@ const ANIMAL_DATA = [
             <stop offset="0%" stopColor="#100A1E"/>
             <stop offset="40%" stopColor="#1E1030"/>
             <stop offset="70%" stopColor="#2A1A3A"/>
-            <stop offset="100%" stopColor="#0C1A0F"/>
+            <stop offset="100%" stopColor="var(--color-bg-primary)"/>
           </linearGradient>
         </defs>
         <rect width="400" height="340" fill="url(#sky-butterfly)"/>
@@ -642,7 +642,7 @@ const ANIMAL_DATA = [
         {[60,110,180,240,300,340].map((x, i) => (
           <circle key={i} cx={x} cy={[120,80,140,100,120,90][i]} r="2" fill="#FFE87A" opacity="0.2"/>
         ))}
-        <rect y="278" width="400" height="62" fill="#0C1A0F" opacity="0.8"/>
+        <rect y="278" width="400" height="62" fill="var(--color-bg-primary)" opacity="0.8"/>
       </svg>
     )
   },
@@ -740,15 +740,15 @@ export default function HomePage() {
   const noCredits = credits !== null && credits <= 0
 
   return (
-    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 72px)', background: '#0C1A0F', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 72px)', background: 'var(--color-bg-primary)', overflow: 'hidden' }}>
 
       {/* BIOME SCENE BACKGROUND */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '70%', overflow: 'hidden', pointerEvents: 'none', zIndex: 0, opacity: visible ? 1 : 0, transition: 'opacity 0.25s ease' }}>
         {animal?.scene}
         {/* Fade to dark at top */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '30%', background: 'linear-gradient(to bottom, #0C1A0F, transparent)', pointerEvents: 'none' }}/>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '30%', background: 'linear-gradient(to bottom, var(--color-bg-primary), transparent)', pointerEvents: 'none' }}/>
         {/* Fade to dark at bottom */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(to bottom, transparent, #0C1A0F)', pointerEvents: 'none' }}/>
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(to bottom, transparent, var(--color-bg-primary))', pointerEvents: 'none' }}/>
       </div>
 
       {/* CONTENT */}
@@ -758,8 +758,8 @@ export default function HomePage() {
         <div style={{ padding: '52px 24px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '32px', height: '32px', background: 'rgba(28,58,34,0.8)', borderRadius: '9px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>🦉</div>
-            <span style={{ fontFamily: "'Fraunces', serif", fontWeight: 700, fontSize: '28px', letterSpacing: '-0.02em', color: '#FAF7F2' }}>
-              Wild<em style={{ fontStyle: 'italic', fontWeight: 400, color: '#E8A245' }}>vue</em>
+            <span style={{ fontFamily: "'Fraunces', serif", fontWeight: 700, fontSize: '28px', letterSpacing: '-0.02em', color: 'var(--color-text-primary)' }}>
+              Wild<em style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--color-accent)' }}>vue</em>
             </span>
           </div>
           <div onClick={() => router.push('/profile')} style={{ width: '34px', height: '34px', borderRadius: '50%', background: 'rgba(28,58,34,0.8)', border: '1.5px solid rgba(232,162,69,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
@@ -771,10 +771,10 @@ export default function HomePage() {
 
         {/* GREETING */}
         <div style={{ padding: '24px 24px 0', flexShrink: 0 }}>
-          <p style={{ fontSize: '13px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#E8A245', marginBottom: '6px', textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>
+          <p style={{ fontSize: '13px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--color-accent)', marginBottom: '6px', textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>
             {timeGreeting}, {firstName}.
           </p>
-          <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 700, fontSize: '32px', lineHeight: 1.1, letterSpacing: '-0.02em', color: '#FAF7F2', textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
+          <h1 style={{ fontFamily: "'Fraunces', serif", fontWeight: 700, fontSize: '32px', lineHeight: 1.1, letterSpacing: '-0.02em', color: 'var(--color-text-primary)', textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
             {wildlifeLine || '\u00A0'}
           </h1>
         </div>
@@ -800,8 +800,8 @@ export default function HomePage() {
             onClick={handleTakePhoto}
             disabled={noCredits}
             style={{
-              background: noCredits ? 'rgba(232,162,69,0.4)' : '#E8A245',
-              color: '#1C2B1E',
+              background: noCredits ? 'rgba(232,162,69,0.4)' : 'var(--color-accent)',
+              color: 'var(--color-text-on-accent)',
               fontFamily: "'Fraunces', serif",
               fontWeight: 700,
               fontSize: '17px',
@@ -830,7 +830,7 @@ export default function HomePage() {
                 <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.25)', fontWeight: 500 }}>or</span>
                 <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.07)' }} />
               </div>
-              <div onClick={handleCameraRoll} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 16px', cursor: 'pointer', border: '1px dashed #3A7D44', borderRadius: '100px', marginBottom: '16px' }}>
+              <div onClick={handleCameraRoll} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px 16px', cursor: 'pointer', border: '1px dashed var(--color-border)', borderRadius: '100px', marginBottom: '16px' }}>
                 <svg viewBox="0 0 24 24" width="15" height="15" stroke="rgba(255,255,255,0.4)" fill="none" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
                 </svg>
@@ -845,14 +845,14 @@ export default function HomePage() {
         {/* CREDITS PILL */}
         <div style={{ marginLeft: '20px', marginRight: '20px', marginBottom: '14px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '100px', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
           <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'rgba(232,162,69,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <svg viewBox="0 0 24 24" width="12" height="12" stroke="#E8A245" fill="none" strokeWidth="2" strokeLinecap="round">
+            <svg viewBox="0 0 24 24" width="12" height="12" stroke="var(--color-accent)" fill="none" strokeWidth="2" strokeLinecap="round">
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
             </svg>
           </div>
           <div style={{ flex: 1, fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>
-            {credits === null ? '...' : <><strong style={{ color: '#E8A245', fontWeight: 600 }}>{credits}</strong> cleanups left this month</>}
+            {credits === null ? '...' : <><strong style={{ color: 'var(--color-accent)', fontWeight: 600 }}>{credits}</strong> cleanups left this month</>}
           </div>
-          <div onClick={() => router.push('/upgrade')} style={{ fontSize: '11px', fontWeight: 600, color: '#E8A245', background: 'rgba(232,162,69,0.12)', borderRadius: '100px', padding: '4px 10px', cursor: 'pointer' }}>
+          <div onClick={() => router.push('/upgrade')} style={{ fontSize: '11px', fontWeight: 600, color: 'var(--color-accent)', background: 'rgba(232,162,69,0.12)', borderRadius: '100px', padding: '4px 10px', cursor: 'pointer' }}>
             Upgrade
           </div>
         </div>

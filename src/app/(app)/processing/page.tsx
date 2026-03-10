@@ -55,7 +55,7 @@ export default function ProcessingPage() {
   return (
     <main style={{
       minHeight: '100vh',
-      background: '#0C1A0F',
+      background: 'var(--color-bg-primary)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -68,14 +68,14 @@ export default function ProcessingPage() {
     }}>
       <div style={{
         width: '80px', height: '80px',
-        background: '#1C3A22',
+        background: 'var(--color-bg-surface)',
         borderRadius: '24px',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         marginBottom: '32px',
         border: '1px solid rgba(58,125,68,0.3)',
         animation: 'pulse 1.8s ease-in-out infinite',
       }}>
-        <svg width="44" height="44" viewBox="0 0 24 24" fill="#E8A245">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="var(--color-accent)">
           <path d="M12 2C9.5 2 7.5 3.5 7.5 5.5C7.5 6.5 8 7.4 8.7 8C7 8.3 5.5 9.5 5.5 11C5.5 12 6 12.8 6.7 13.3C5.5 13.8 4.5 15 4.5 16.5C4.5 18.4 6.1 20 8 20L16 20C17.9 20 19.5 18.4 19.5 16.5C19.5 15 18.5 13.8 17.3 13.3C18 12.8 18.5 12 18.5 11C18.5 9.5 17 8.3 15.3 8C16 7.4 16.5 6.5 16.5 5.5C16.5 3.5 14.5 2 12 2Z"/>
         </svg>
       </div>
@@ -83,7 +83,7 @@ export default function ProcessingPage() {
       <h2 style={{
         fontFamily: "'Fraunces', serif",
         fontSize: '26px', fontWeight: 600,
-        color: '#FAF7F2', marginBottom: '10px',
+        color: 'var(--color-text-primary)', marginBottom: '10px',
       }}>Cleaning your photo</h2>
 
       <p style={{
@@ -99,7 +99,7 @@ export default function ProcessingPage() {
           <div key={i} style={{
             width: '8px', height: '8px',
             borderRadius: '50%',
-            background: '#E8A245',
+            background: 'var(--color-accent)',
             animation: `bounce 1.2s ease-in-out ${i * 0.2}s infinite`,
           }}/>
         ))}
