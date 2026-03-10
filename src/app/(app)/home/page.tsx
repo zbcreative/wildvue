@@ -838,7 +838,7 @@ export default function HomePage() {
         </div>
 
         {/* ATTRIBUTE CARDS */}
-        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'center', paddingTop: '16px', paddingBottom: '12px', transform: 'translateY(-40px)', opacity: visible ? 1 : 0, transition: 'opacity 0.25s ease' }}>
+        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'center', paddingTop: '16px', paddingBottom: '12px', transform: 'translateY(-16px)', opacity: visible ? 1 : 0, transition: 'opacity 0.25s ease' }}>
           {animal && animalAttributes[animal.key] && (
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'center' }}>
               {(['habitat', 'diet', 'status'] as const).map(attr => {
