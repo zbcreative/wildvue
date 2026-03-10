@@ -18,28 +18,13 @@ export async function POST(request: NextRequest) {
     const mimeType = imageFile.type as 'image/jpeg' | 'image/png' | 'image/webp'
 
     const model = genAI.getGenerativeModel({ 
-  model: 'gemini-2.0-flash-exp-image-generation',
+  model: 'gemini-2.5-flash-image',
   generationConfig: {
     responseModalities: ['image', 'text'],
   } as never,
 })
 
-    const prompt = `You are a photo editing AI. This photo was taken at a zoo, aquarium, safari, or wildlife park. 
-    
-Your task: Remove all barriers between the camera and the animal. This includes:
-- Metal fence wires or bars
-- Chain-link fencing
-- Glass reflections or smudges
-- Cage bars
-- Netting or mesh
-- Any other man-made barriers
-
-Rules:
-- Keep the animal exactly as it appears — do not alter it
-- Keep the background and environment natural
-- Fill in any removed barriers with realistic background
-- Return only the cleaned image with no text or commentary
-- Preserve the original photo composition and lighting`
+    const prompt = `Recreate this photo to remove all barriers between the camera and the animal — including wire fencing, cage bars, glass, netting, or mesh. If there is any debris, algae, grass, or foreign objects in the water or environment that obstruct the animal, remove those too. Every other detail (animal's appearance, position, and expression, the background, lighting, color, angle, and composition) must match exactly. Hyper realistic recreation. Return only the image.`
 
     const result = await model.generateContent([
       prompt,
