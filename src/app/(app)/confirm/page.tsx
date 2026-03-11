@@ -189,7 +189,7 @@ export default function ConfirmPage() {
               color: '#FAF5E8', background: 'var(--sage)',
               borderRadius: '100px', padding: '5px 12px', cursor: 'pointer', flexShrink: 0,
             }}>
-              Upgrade
+              Get more
             </div>
           )}
         </div>
