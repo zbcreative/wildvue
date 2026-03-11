@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { Suspense, useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 
 // ---------------------------------------------------------------------------
@@ -88,45 +88,99 @@ async function getExportBlob(resultUrl: string, isPro: boolean): Promise<Blob> {
 }
 
 // ---------------------------------------------------------------------------
-// Page component
+// Inner page component — reads search params to detect entry point
 // ---------------------------------------------------------------------------
-export default function ResultPage() {
-  const router = useRouter()
+function ResultPageContent() {
+  const router       = useRouter()
+  const searchParams = useSearchParams()
+
   const [originalUrl, setOriginalUrl] = useState<string | null>(null)
   const [resultUrl,   setResultUrl]   = useState<string | null>(null)
   const [isAfter,     setIsAfter]     = useState(true)
   const [saved,       setSaved]       = useState(false)
-  // credits.remaining < 0 is the existing "unlimited / pro" convention
   const [isPro,       setIsPro]       = useState(false)
 
   useEffect(() => {
-    const original = sessionStorage.getItem('wildvue_selected_image')
-    const result   = sessionStorage.getItem('wildvue_result_image')
-    if (!original || !result) { router.push('/home'); return }
-    setOriginalUrl(original)
-    setResultUrl(result)
+    const fromHistory = searchParams.get('from') === 'history'
+    const cleanupId   = searchParams.get('id')
 
-    // Primary: read the is_pro flag written by the processing page after the API call.
-    // Fallback: query credits.is_pro directly from Supabase (covers navigating back
-    // to the result page outside of the normal processing flow).
-    const cached = sessionStorage.getItem('wildvue_is_pro')
-    if (cached !== null) {
-      setIsPro(cached === 'true')
-    } else {
-      const loadPro = async () => {
+    if (fromHistory && cleanupId) {
+      // -----------------------------------------------------------------------
+      // Entry point: navigated from history page.
+      // Fetch the cleanup record and generate fresh signed URLs (1-hour expiry).
+      // -----------------------------------------------------------------------
+      const load = async () => {
         const supabase = createClient()
         const { data: { user } } = await supabase.auth.getUser()
-        if (!user) return
-        const { data } = await supabase
-          .from('credits')
-          .select('is_pro')
+        if (!user) { router.push('/signin'); return }
+
+        const { data: cleanup } = await supabase
+          .from('cleanups')
+          .select('input_url, output_url')
+          .eq('id', cleanupId)
           .eq('user_id', user.id)
           .single()
-        if (data) setIsPro(data.is_pro)
+
+        if (!cleanup?.input_url || !cleanup?.output_url) {
+          router.push('/history')
+          return
+        }
+
+        const [inputSigned, outputSigned] = await Promise.all([
+          supabase.storage.from('cleanups').createSignedUrl(cleanup.input_url,  3600),
+          supabase.storage.from('cleanups').createSignedUrl(cleanup.output_url, 3600),
+        ])
+
+        if (inputSigned.error)  console.error('Signed URL (input) error:',  inputSigned.error)
+        if (outputSigned.error) console.error('Signed URL (output) error:', outputSigned.error)
+
+        setOriginalUrl(inputSigned.data?.signedUrl  ?? null)
+        setResultUrl(outputSigned.data?.signedUrl   ?? null)
+
+        // Load pro status
+        const cached = sessionStorage.getItem('wildvue_is_pro')
+        if (cached !== null) {
+          setIsPro(cached === 'true')
+        } else {
+          const { data: credits } = await supabase
+            .from('credits')
+            .select('is_pro')
+            .eq('user_id', user.id)
+            .single()
+          if (credits) setIsPro(credits.is_pro)
+        }
       }
-      loadPro()
+      load()
+    } else {
+      // -----------------------------------------------------------------------
+      // Entry point: fresh cleanup via the normal processing flow.
+      // Images are stored as data URIs in sessionStorage.
+      // -----------------------------------------------------------------------
+      const original = sessionStorage.getItem('wildvue_selected_image')
+      const result   = sessionStorage.getItem('wildvue_result_image')
+      if (!original || !result) { router.push('/home'); return }
+      setOriginalUrl(original)
+      setResultUrl(result)
+
+      const cached = sessionStorage.getItem('wildvue_is_pro')
+      if (cached !== null) {
+        setIsPro(cached === 'true')
+      } else {
+        const loadPro = async () => {
+          const supabase = createClient()
+          const { data: { user } } = await supabase.auth.getUser()
+          if (!user) return
+          const { data } = await supabase
+            .from('credits')
+            .select('is_pro')
+            .eq('user_id', user.id)
+            .single()
+          if (data) setIsPro(data.is_pro)
+        }
+        loadPro()
+      }
     }
-  }, [router])
+  }, [router, searchParams])
 
   const toggle = () => setIsAfter(v => !v)
 
@@ -411,6 +465,18 @@ export default function ResultPage() {
         </div>
       </div>
     </main>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Default export — wraps content in Suspense (required by useSearchParams
+// in the Next.js App Router).
+// ---------------------------------------------------------------------------
+export default function ResultPage() {
+  return (
+    <Suspense>
+      <ResultPageContent />
+    </Suspense>
   )
 }
 

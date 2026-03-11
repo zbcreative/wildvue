@@ -85,6 +85,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No image in response' }, { status: 500 })
     }
 
+    const outputBase64 = imagePart.inlineData.data
+    const outputMime = imagePart.inlineData.mimeType
+
     // Decrement credit only after successful cleanup
     await supabase
       .from('credits')
@@ -94,8 +97,56 @@ export async function POST(request: NextRequest) {
       })
       .eq('user_id', user.id)
 
-    const outputBase64 = imagePart.inlineData.data
-    const outputMime = imagePart.inlineData.mimeType
+    // Persist original + cleaned images to Storage and record in cleanups table.
+    // Wrapped in try/catch so a storage failure never blocks the response —
+    // the user already paid a credit so they must get their image back.
+    try {
+      const ts   = Date.now()
+      const rand = Math.random().toString(36).slice(2, 7)
+      const origExt    = mimeType.split('/')[1] || 'jpg'
+      const cleanedExt = outputMime.split('/')[1] || 'jpg'
+      const originalPath = `${user.id}/originals/${ts}-${rand}.${origExt}`
+      const cleanedPath  = `${user.id}/cleaned/${ts}-${rand}.${cleanedExt}`
+
+      const [origUpload, cleanedUpload] = await Promise.all([
+        supabase.storage.from('cleanups').upload(
+          originalPath,
+          Buffer.from(imageBytes),
+          { contentType: mimeType, upsert: false }
+        ),
+        supabase.storage.from('cleanups').upload(
+          cleanedPath,
+          Buffer.from(outputBase64, 'base64'),
+          { contentType: outputMime, upsert: false }
+        ),
+      ])
+
+      if (!origUpload.error && !cleanedUpload.error) {
+        // Generate signed URLs (1-hour expiry) to verify access works, then
+        // store the storage paths — paths are permanent and let the history
+        // page regenerate fresh signed URLs whenever needed.
+        const [origSigned, cleanedSigned] = await Promise.all([
+          supabase.storage.from('cleanups').createSignedUrl(originalPath, 3600),
+          supabase.storage.from('cleanups').createSignedUrl(cleanedPath,  3600),
+        ])
+
+        if (origSigned.error)    console.error('Signed URL (original) error:', origSigned.error)
+        if (cleanedSigned.error) console.error('Signed URL (cleaned)  error:', cleanedSigned.error)
+
+        const { error: insertError } = await supabase.from('cleanups').insert({
+          user_id:    user.id,
+          input_url:  originalPath,
+          output_url: cleanedPath,
+          status:     'completed',
+        })
+        if (insertError) console.error('Cleanups insert error:', insertError)
+      } else {
+        if (origUpload.error)   console.error('Original upload error:', origUpload.error)
+        if (cleanedUpload.error) console.error('Cleaned upload error:', cleanedUpload.error)
+      }
+    } catch (storageErr) {
+      console.error('Storage/DB save failed (non-fatal):', storageErr)
+    }
 
     return NextResponse.json({
       image: `data:${outputMime};base64,${outputBase64}`,
