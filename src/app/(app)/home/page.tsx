@@ -963,23 +963,21 @@ export default function HomePage() {
               color: '#FAF5E8',
               fontFamily: "'Fraunces', serif",
               fontWeight: 700,
-              fontSize: '17px',
+              fontSize: '22px',
               letterSpacing: '-0.02em',
               border: 'none',
               borderRadius: '14px',
               padding: '18px 24px',
               cursor: noCredits ? 'not-allowed' : 'pointer',
               width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
               boxShadow: noCredits ? 'none' : '0 4px 16px rgba(74,124,89,0.28)',
               marginBottom: '12px',
             }}
           >
-            <span style={{ fontSize: '20px' }}>📸</span>
-            {noCredits ? 'No cleanups left — Upgrade' : 'Take a photo now'}
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', transform: 'translateX(-10px)' }}>
+              <span style={{ fontSize: '22px' }}>📸</span>
+              {noCredits ? 'No cleanups left — Upgrade' : 'Take a photo now'}
+            </span>
           </button>
 
           {!noCredits && (

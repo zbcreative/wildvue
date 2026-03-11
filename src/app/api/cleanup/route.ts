@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       } as never,
     })
 
-    const prompt = `Recreate this photo to remove all barriers between the camera and the animal — including wire fencing, cage bars, glass, netting, or mesh. If there is any debris, algae, grass, or foreign objects in the water or environment that obstruct the animal, remove those too. Every other detail (animal's appearance, position, and expression, the background, lighting, color, angle, and composition) must match exactly. Hyper realistic recreation. Return only the image.`
+    const prompt = `Recreate this photo to remove all barriers between the camera and the animal — including wire fencing, cage bars, glass, netting, or mesh. If there is any debris, algae, grass, or foreign objects in the water or environment that obstruct the animal, remove those too. Every other detail (animal's appearance, position, and expression, the background, lighting, color, angle, and composition) must match exactly. Hyper realistic recreation. Output at the highest possible resolution and detail, 4K quality. Return only the image.`
 
     const result = await model.generateContent([
       prompt,
