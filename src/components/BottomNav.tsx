@@ -40,7 +40,7 @@ const navItems = [
 export default function BottomNav() {
   const pathname = usePathname()
 
-  const hideOn = ['/confirm', '/processing', '/result', '/settings', '/signin']
+  const hideOn = ['/processing', '/result', '/settings', '/signin']
   if (hideOn.some(p => pathname.startsWith(p))) return null
 
   return (
