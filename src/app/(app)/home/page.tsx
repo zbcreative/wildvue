@@ -807,7 +807,8 @@ export default function HomePage() {
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { router.push('/signin'); return }
-    const rawName = user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0]?.split('.')[0] || 'there'
+    const { data: profile } = await supabase.from('profiles').select('first_name').eq('id', user.id).single()
+    const rawName = profile?.first_name || user.email?.split('@')[0]?.split('.')[0] || 'there'
     const name = rawName.charAt(0).toUpperCase() + rawName.slice(1).toLowerCase()
     setFirstName(name)
     const cached = sessionStorage.getItem('wildvue_is_pro')

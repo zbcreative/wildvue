@@ -20,8 +20,21 @@ export async function GET(request: NextRequest) {
         },
       }
     )
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) return NextResponse.redirect(new URL('/home', origin))
+    const { data: { session }, error } = await supabase.auth.exchangeCodeForSession(code)
+    if (!error && session) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('has_onboarded')
+        .eq('id', session.user.id)
+        .single()
+
+      if (!profile) {
+        await supabase.from('profiles').insert({ id: session.user.id })
+      }
+
+      const destination = profile?.has_onboarded ? '/home' : '/onboarding'
+      return NextResponse.redirect(new URL(destination, origin))
+    }
   }
 
   return NextResponse.redirect(new URL('/', origin))
