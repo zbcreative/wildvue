@@ -2,20 +2,130 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase'
 
+// ---------------------------------------------------------------------------
+// Watermark — draws "Made with Wildvue" pill onto the cleaned image blob.
+// Returns the watermarked blob; falls back to the original on any failure.
+// ---------------------------------------------------------------------------
+async function applyWatermark(sourceUrl: string): Promise<Blob> {
+  // Ensure Google Fonts (Fraunces) are ready before measuring/drawing text
+  await document.fonts.ready
+
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+
+    img.onload = () => {
+      const canvas = document.createElement('canvas')
+      canvas.width  = img.naturalWidth
+      canvas.height = img.naturalHeight
+      const ctx = canvas.getContext('2d')
+      if (!ctx) { reject(new Error('No 2d context')); return }
+
+      // Draw the source image at full resolution
+      ctx.drawImage(img, 0, 0)
+
+      // Scale watermark proportionally to image width
+      // (looks like ~10px text on a typical 375px-wide phone display)
+      const fontSize   = Math.round(canvas.width * 0.026)
+      const padX       = Math.round(fontSize * 1.2)
+      const padY       = Math.round(fontSize * 0.5)
+      const bottomGap  = Math.round(canvas.height * 0.016)
+
+      ctx.font = `italic bold ${fontSize}px 'Fraunces', serif`
+      const textW    = ctx.measureText('Made with Wildvue').width
+      const pillW    = textW + padX * 2
+      const pillH    = fontSize + padY * 2
+      const pillX    = (canvas.width - pillW) / 2
+      const pillY    = canvas.height - pillH - bottomGap
+      const radius   = pillH / 2
+
+      // Pill background
+      ctx.beginPath()
+      ctx.roundRect(pillX, pillY, pillW, pillH, radius)
+      ctx.fillStyle = 'rgba(26,46,30,0.5)'
+      ctx.fill()
+
+      // Pill border
+      ctx.strokeStyle = 'rgba(232,213,163,0.2)'
+      ctx.lineWidth   = Math.max(1, Math.round(canvas.width * 0.001))
+      ctx.stroke()
+
+      // Text
+      ctx.fillStyle    = '#FAF5E8'
+      ctx.textAlign    = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText('Made with Wildvue', canvas.width / 2, pillY + pillH / 2)
+
+      canvas.toBlob(
+        blob => blob ? resolve(blob) : reject(new Error('toBlob failed')),
+        'image/jpeg',
+        0.95,
+      )
+    }
+
+    img.onerror = reject
+    img.src = sourceUrl
+  })
+}
+
+// ---------------------------------------------------------------------------
+// Returns the blob to export — watermarked for free users, raw for pro.
+// Falls back to raw blob on canvas failure.
+// ---------------------------------------------------------------------------
+async function getExportBlob(resultUrl: string, isPro: boolean): Promise<Blob> {
+  const rawRes  = await fetch(resultUrl)
+  const rawBlob = await rawRes.blob()
+
+  if (isPro) return rawBlob
+
+  try {
+    return await applyWatermark(resultUrl)
+  } catch {
+    return rawBlob
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Page component
+// ---------------------------------------------------------------------------
 export default function ResultPage() {
   const router = useRouter()
   const [originalUrl, setOriginalUrl] = useState<string | null>(null)
-  const [resultUrl, setResultUrl] = useState<string | null>(null)
-  const [isAfter, setIsAfter] = useState(true)
-  const [saved, setSaved] = useState(false)
+  const [resultUrl,   setResultUrl]   = useState<string | null>(null)
+  const [isAfter,     setIsAfter]     = useState(true)
+  const [saved,       setSaved]       = useState(false)
+  // credits.remaining < 0 is the existing "unlimited / pro" convention
+  const [isPro,       setIsPro]       = useState(false)
 
   useEffect(() => {
     const original = sessionStorage.getItem('wildvue_selected_image')
-    const result = sessionStorage.getItem('wildvue_result_image')
+    const result   = sessionStorage.getItem('wildvue_result_image')
     if (!original || !result) { router.push('/home'); return }
     setOriginalUrl(original)
     setResultUrl(result)
+
+    // Primary: read the is_pro flag written by the processing page after the API call.
+    // Fallback: query credits.is_pro directly from Supabase (covers navigating back
+    // to the result page outside of the normal processing flow).
+    const cached = sessionStorage.getItem('wildvue_is_pro')
+    if (cached !== null) {
+      setIsPro(cached === 'true')
+    } else {
+      const loadPro = async () => {
+        const supabase = createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) return
+        const { data } = await supabase
+          .from('credits')
+          .select('is_pro')
+          .eq('user_id', user.id)
+          .single()
+        if (data) setIsPro(data.is_pro)
+      }
+      loadPro()
+    }
   }, [router])
 
   const toggle = () => setIsAfter(v => !v)
@@ -23,19 +133,19 @@ export default function ResultPage() {
   const handleSave = async () => {
     if (!resultUrl) return
     try {
-      const res = await fetch(resultUrl)
-      const blob = await res.blob()
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
+      const blob = await getExportBlob(resultUrl, isPro)
+      const url  = URL.createObjectURL(blob)
+      const a    = document.createElement('a')
+      a.href     = url
       a.download = `wildvue-${Date.now()}.jpg`
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
     } catch {
-      const a = document.createElement('a')
-      a.href = resultUrl
+      // Last-resort: direct data-URL download (no watermark on failure)
+      const a    = document.createElement('a')
+      a.href     = resultUrl
       a.download = `wildvue-${Date.now()}.jpg`
       a.click()
     }
@@ -46,26 +156,25 @@ export default function ResultPage() {
   const handleShare = async () => {
     if (!resultUrl) return
     try {
-      const res = await fetch(resultUrl)
-      const blob = await res.blob()
+      const blob = await getExportBlob(resultUrl, isPro)
       const file = new File([blob], 'wildvue.jpg', { type: blob.type })
       if (navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file], title: 'Wildvue — barrier-free wildlife photo' })
       } else {
         await handleSave()
       }
-    } catch { /* user cancelled */ }
+    } catch { /* user cancelled or share unsupported */ }
   }
 
   const handleCleanAnother = () => {
-    const input = document.createElement('input')
-    input.type = 'file'
-    input.accept = 'image/*'
+    const input    = document.createElement('input')
+    input.type     = 'file'
+    input.accept   = 'image/*'
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0]
       if (!file) return
-      const reader = new FileReader()
-      reader.onload = () => {
+      const reader   = new FileReader()
+      reader.onload  = () => {
         sessionStorage.setItem('wildvue_selected_image', reader.result as string)
         router.push('/confirm')
       }
@@ -149,7 +258,6 @@ export default function ResultPage() {
             transition: 'opacity 0.45s ease',
           }}
         />
-
 
         {/* "Barriers removed" badge — top left */}
         <div style={{
@@ -285,10 +393,7 @@ export default function ResultPage() {
 
         {/* Secondary row */}
         <div style={{ display: 'flex', gap: '8px' }}>
-          <button
-            onClick={handleShare}
-            style={secondaryBtn}
-          >
+          <button onClick={handleShare} style={secondaryBtn}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
               <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
@@ -296,10 +401,7 @@ export default function ResultPage() {
             </svg>
             Share
           </button>
-          <button
-            onClick={handleCleanAnother}
-            style={secondaryBtn}
-          >
+          <button onClick={handleCleanAnother} style={secondaryBtn}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
               <circle cx="12" cy="13" r="4"/>

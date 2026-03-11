@@ -112,6 +112,9 @@ export default function ProcessingPage() {
           if (data.creditsRemaining !== undefined) {
             sessionStorage.setItem('wildvue_credits', String(data.creditsRemaining))
           }
+          if (data.isPro !== undefined) {
+            sessionStorage.setItem('wildvue_is_pro', String(data.isPro))
+          }
           setTimeout(() => router.push('/result'), 400)
         } else if (data.error === 'No credits remaining') {
           router.push('/home?upgrade=true')

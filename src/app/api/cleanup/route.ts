@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     // Credit check
     const { data: credits } = await supabase
       .from('credits')
-      .select('remaining, lifetime_used')
+      .select('remaining, lifetime_used, is_pro')
       .eq('user_id', user.id)
       .single()
 
@@ -100,6 +100,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       image: `data:${outputMime};base64,${outputBase64}`,
       creditsRemaining: credits.remaining - 1,
+      isPro: credits.is_pro,
     })
 
   } catch (error: unknown) {

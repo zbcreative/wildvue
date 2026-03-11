@@ -8,6 +8,7 @@ export default function ConfirmPage() {
   const router = useRouter()
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [credits, setCredits] = useState<number | null>(null)
+  const [isPro, setIsPro] = useState(false)
 
   useEffect(() => {
     const url = sessionStorage.getItem('wildvue_selected_image')
@@ -15,15 +16,20 @@ export default function ConfirmPage() {
     setImageUrl(url)
 
     const loadCredits = async () => {
+      const cached = sessionStorage.getItem('wildvue_is_pro')
+      if (cached !== null) setIsPro(cached === 'true')
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
       const { data } = await supabase
         .from('credits')
-        .select('remaining')
+        .select('remaining, is_pro')
         .eq('user_id', user.id)
         .single()
-      if (data) setCredits(data.remaining)
+      if (data) {
+        setCredits(data.remaining)
+        if (cached === null) setIsPro(data.is_pro)
+      }
     }
     loadCredits()
   }, [router])
@@ -160,18 +166,32 @@ export default function ConfirmPage() {
           <div style={{ flex: 1, fontSize: '12px', color: 'rgba(26,46,30,0.55)' }}>
             {credits === null
               ? '...'
-              : credits < 0
+              : isPro
                 ? <span style={{ color: 'var(--sage)', fontWeight: 600 }}>Unlimited cleanups</span>
                 : <><strong style={{ color: 'var(--sage)', fontWeight: 600 }}>{credits}</strong> cleanups left this month</>
             }
           </div>
-          <div onClick={() => router.push('/upgrade')} style={{
-            fontSize: '11px', fontWeight: 600,
-            color: '#FAF5E8', background: 'var(--sage)',
-            borderRadius: '100px', padding: '5px 12px', cursor: 'pointer', flexShrink: 0,
-          }}>
-            Upgrade
-          </div>
+          {isPro ? (
+            <div style={{
+              fontSize: '9px',
+              fontWeight: 700,
+              color: '#1A2E1E',
+              background: '#E8D5A3',
+              borderRadius: '100px',
+              padding: '3px 10px',
+              flexShrink: 0,
+            }}>
+              Pro ✦
+            </div>
+          ) : (
+            <div onClick={() => router.push('/upgrade')} style={{
+              fontSize: '11px', fontWeight: 600,
+              color: '#FAF5E8', background: 'var(--sage)',
+              borderRadius: '100px', padding: '5px 12px', cursor: 'pointer', flexShrink: 0,
+            }}>
+              Upgrade
+            </div>
+          )}
         </div>
 
         {/* Primary CTA */}

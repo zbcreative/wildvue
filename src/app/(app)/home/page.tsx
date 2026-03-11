@@ -788,6 +788,7 @@ const WILDLIFE_LINES = [
 export default function HomePage() {
   const router = useRouter()
   const [credits, setCredits] = useState<number | null>(null)
+  const [isPro, setIsPro] = useState(false)
   const [firstName, setFirstName] = useState('there')
   const [timeGreeting, setTimeGreeting] = useState('')
   const [wildlifeLine, setWildlifeLine] = useState('')
@@ -809,8 +810,13 @@ export default function HomePage() {
     const rawName = user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0]?.split('.')[0] || 'there'
     const name = rawName.charAt(0).toUpperCase() + rawName.slice(1).toLowerCase()
     setFirstName(name)
-    const { data } = await supabase.from('credits').select('remaining').eq('user_id', user.id).single()
-    if (data) setCredits(data.remaining)
+    const cached = sessionStorage.getItem('wildvue_is_pro')
+    if (cached !== null) setIsPro(cached === 'true')
+    const { data } = await supabase.from('credits').select('remaining, is_pro').eq('user_id', user.id).single()
+    if (data) {
+      setCredits(data.remaining)
+      if (cached === null) setIsPro(data.is_pro)
+    }
   }
 
   const shuffleAnimal = () => {
@@ -1029,23 +1035,37 @@ export default function HomePage() {
             <div style={{ flex: 1, fontSize: '12px', color: 'rgba(26,46,30,0.55)' }}>
               {credits === null
                 ? '...'
-                : credits < 0
+                : isPro
                   ? <span style={{ color: 'var(--sage)', fontWeight: 600 }}>Unlimited cleanups</span>
                   : <><strong style={{ color: 'var(--sage)', fontWeight: 600 }}>{credits}</strong> cleanups left this month</>
               }
             </div>
-            <div onClick={() => router.push('/upgrade')} style={{
-              fontSize: '11px',
-              fontWeight: 600,
-              color: '#FAF5E8',
-              background: 'var(--sage)',
-              borderRadius: '100px',
-              padding: '5px 12px',
-              cursor: 'pointer',
-              flexShrink: 0,
-            }}>
-              Upgrade
-            </div>
+            {isPro ? (
+              <div style={{
+                fontSize: '9px',
+                fontWeight: 700,
+                color: '#1A2E1E',
+                background: '#E8D5A3',
+                borderRadius: '100px',
+                padding: '3px 10px',
+                flexShrink: 0,
+              }}>
+                Pro ✦
+              </div>
+            ) : (
+              <div onClick={() => router.push('/upgrade')} style={{
+                fontSize: '11px',
+                fontWeight: 600,
+                color: '#FAF5E8',
+                background: 'var(--sage)',
+                borderRadius: '100px',
+                padding: '5px 12px',
+                cursor: 'pointer',
+                flexShrink: 0,
+              }}>
+                Upgrade
+              </div>
+            )}
           </div>
         </div>
 
