@@ -1,7 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { PURCHASES_ERROR_CODE } from '@revenuecat/purchases-capacitor'
+import type { PurchasesOffering, PurchasesPackage } from '@revenuecat/purchases-capacitor'
+import { getOfferings, purchasePackage, getCustomerInfo, restorePurchases } from '@/lib/revenuecat'
+import { createClient } from '@/lib/supabase'
 
 type Plan = 'monthly' | 'yearly' | 'pack'
 
@@ -135,6 +139,26 @@ function PlanRow({ emoji, name, perks, price, period, selected, onSelect, border
 export default function UpgradePage() {
   const router = useRouter()
   const [selected, setSelected] = useState<Plan>('yearly')
+  const [offering, setOffering] = useState<PurchasesOffering | null>(null)
+  const [purchasing, setPurchasing] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    getOfferings()
+      .then((current) => { if (current) setOffering(current) })
+      .catch(() => { /* web/dev mode — offerings unavailable */ })
+  }, [])
+
+  const packageForPlan = (plan: Plan): PurchasesPackage | null => {
+    if (!offering) return null
+    if (plan === 'monthly') return offering.monthly
+    if (plan === 'yearly') return offering.annual
+    return (
+      offering.availablePackages.find(
+        (p) => p !== offering.monthly && p !== offering.annual,
+      ) ?? null
+    )
+  }
 
   const ctaText: Record<Plan, string> = {
     yearly: 'Get Pro Yearly 🪄',
@@ -142,12 +166,60 @@ export default function UpgradePage() {
     pack: 'Get 5-Pack 🪄',
   }
 
-  const handlePurchase = () => {
-    console.log('Purchase plan:', selected)
+  const handlePurchase = async () => {
+    const pkg = packageForPlan(selected)
+    if (!pkg || purchasing) return
+
+    setPurchasing(true)
+    setError(null)
+
+    try {
+      await purchasePackage(pkg)
+
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error('No authenticated user')
+
+      if (selected === 'pack') {
+        const { data: credits } = await supabase
+          .from('credits')
+          .select('remaining')
+          .eq('user_id', user.id)
+          .single()
+
+        await supabase
+          .from('credits')
+          .update({ remaining: (credits?.remaining ?? 0) + 5 })
+          .eq('user_id', user.id)
+      } else {
+        const customerInfo = await getCustomerInfo()
+        if (customerInfo?.entitlements.active['pro']) {
+          await supabase
+            .from('credits')
+            .update({ is_pro: true })
+            .eq('user_id', user.id)
+        }
+      }
+
+      router.push('/home')
+    } catch (err: unknown) {
+      const rcErr = err as { code?: string }
+      if (rcErr.code === PURCHASES_ERROR_CODE.PURCHASE_CANCELLED_ERROR) {
+        return
+      }
+      console.error('[Upgrade] purchase failed:', err)
+      setError('Purchase failed. Please try again.')
+    } finally {
+      setPurchasing(false)
+    }
   }
 
-  const handleRestore = () => {
-    console.log('Restore purchases')
+  const handleRestore = async () => {
+    try {
+      await restorePurchases()
+    } catch {
+      // silently ignore restore errors
+    }
   }
 
   return (
@@ -274,6 +346,7 @@ export default function UpgradePage() {
         {/* CTA */}
         <button
           onClick={handlePurchase}
+          disabled={purchasing}
           style={{
             width: '100%',
             background: 'var(--sage)',
@@ -285,12 +358,26 @@ export default function UpgradePage() {
             borderRadius: '16px',
             padding: '16px 18px',
             boxShadow: '0 6px 18px rgba(74,124,89,0.25)',
-            marginBottom: '14px',
-            cursor: 'pointer',
+            marginBottom: '8px',
+            cursor: purchasing ? 'not-allowed' : 'pointer',
+            opacity: purchasing ? 0.7 : 1,
+            transition: 'opacity 0.15s ease',
           }}
         >
-          {ctaText[selected]}
+          {purchasing ? 'Processing…' : ctaText[selected]}
         </button>
+
+        {error && (
+          <p style={{
+            textAlign: 'center',
+            fontSize: '11px',
+            color: '#c0392b',
+            marginBottom: '6px',
+            marginTop: 0,
+          }}>
+            {error}
+          </p>
+        )}
 
         {/* Restore purchases */}
         <p

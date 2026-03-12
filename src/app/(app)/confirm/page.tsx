@@ -167,7 +167,7 @@ export default function ConfirmPage() {
             {credits === null
               ? '...'
               : isPro
-                ? <span style={{ color: 'var(--sage)', fontWeight: 600 }}>Unlimited cleanups</span>
+                ? <><strong style={{ color: '#4A7C59', fontWeight: 600 }}>Unlimited</strong> cleanups</>
                 : <><strong style={{ color: 'var(--sage)', fontWeight: 600 }}>{credits}</strong> cleanups left this month</>
             }
           </div>

@@ -351,8 +351,8 @@ export default function ProfilePage() {
               padding: '12px',
             }}>
               <div style={{ fontSize: '16px', marginBottom: '4px' }}>✨</div>
-              <div style={{ fontFamily: "'Fraunces', serif", fontSize: '18px', fontWeight: 700, color: 'var(--sage)', lineHeight: 1 }}>
-                {credits.is_pro ? '∞' : credits.remaining}
+              <div style={{ fontFamily: "'Fraunces', serif", fontSize: credits.is_pro ? '14px' : '18px', fontWeight: 700, color: '#4A7C59', lineHeight: 1 }}>
+                {credits.is_pro ? 'Unlimited' : credits.remaining}
               </div>
               <div style={{ fontSize: '11px', color: 'rgba(26,46,30,0.45)', marginTop: '4px' }}>
                 {credits.is_pro ? 'Cleanups' : 'Credits left'}
