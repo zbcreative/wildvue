@@ -4,43 +4,15 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const navItems = [
-  {
-    href: '/home',
-    label: 'Home',
-    icon: (active: boolean) => (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M3 12L12 3L21 12V21H15V15H9V21H3V12Z" fill={active ? 'var(--dark)' : 'none'} stroke={active ? 'var(--dark)' : 'rgba(26,46,30,0.3)'} strokeWidth="1.8" strokeLinejoin="round"/>
-      </svg>
-    ),
-  },
-  {
-    href: '/history',
-    label: 'History',
-    icon: (active: boolean) => (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <rect x="3" y="3" width="8" height="8" rx="1.5" fill={active ? 'var(--dark)' : 'none'} stroke={active ? 'var(--dark)' : 'rgba(26,46,30,0.3)'} strokeWidth="1.8"/>
-        <rect x="13" y="3" width="8" height="8" rx="1.5" fill={active ? 'var(--dark)' : 'none'} stroke={active ? 'var(--dark)' : 'rgba(26,46,30,0.3)'} strokeWidth="1.8"/>
-        <rect x="3" y="13" width="8" height="8" rx="1.5" fill={active ? 'var(--dark)' : 'none'} stroke={active ? 'var(--dark)' : 'rgba(26,46,30,0.3)'} strokeWidth="1.8"/>
-        <rect x="13" y="13" width="8" height="8" rx="1.5" fill={active ? 'var(--dark)' : 'none'} stroke={active ? 'var(--dark)' : 'rgba(26,46,30,0.3)'} strokeWidth="1.8"/>
-      </svg>
-    ),
-  },
-  {
-    href: '/profile',
-    label: 'Profile',
-    icon: (active: boolean) => (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="8" r="4" fill={active ? 'var(--dark)' : 'none'} stroke={active ? 'var(--dark)' : 'rgba(26,46,30,0.3)'} strokeWidth="1.8"/>
-        <path d="M4 20C4 17 7.6 14 12 14C16.4 14 20 17 20 20" stroke={active ? 'var(--dark)' : 'rgba(26,46,30,0.3)'} strokeWidth="1.8" strokeLinecap="round"/>
-      </svg>
-    ),
-  },
+  { href: '/home',    label: 'Home',    emoji: '🔭' },
+  { href: '/history', label: 'History', emoji: '📖' },
+  { href: '/profile', label: 'Profile', emoji: '🪪' },
 ]
 
 export default function BottomNav() {
   const pathname = usePathname()
 
-  const hideOn = ['/settings', '/signin']
+  const hideOn = ['/signin']
   if (hideOn.some(p => pathname.startsWith(p))) return null
 
   return (
@@ -57,7 +29,8 @@ export default function BottomNav() {
       paddingBottom: 'env(safe-area-inset-bottom)',
     }}>
       {navItems.map(item => {
-        const active = pathname.startsWith(item.href)
+        const active = pathname.startsWith(item.href) ||
+          (item.href === '/profile' && pathname.startsWith('/settings'))
         return (
           <Link key={item.href} href={item.href} style={{
             display: 'flex', flexDirection: 'column',
@@ -65,10 +38,15 @@ export default function BottomNav() {
             textDecoration: 'none',
             padding: '8px 24px',
           }}>
-            {item.icon(active)}
             <span style={{
-              fontSize: '11px', fontWeight: 500,
-              color: active ? 'var(--dark)' : 'rgba(26,46,30,0.3)',
+              fontSize: '22px',
+              lineHeight: 1,
+              filter: active ? 'grayscale(0) opacity(1)' : 'grayscale(1) opacity(0.35)',
+              transition: 'filter 0.15s ease',
+            }}>{item.emoji}</span>
+            <span style={{
+              fontSize: '10px', fontWeight: 600,
+              color: active ? '#1A2E1E' : 'rgba(26,46,30,0.3)',
               fontFamily: "'Plus Jakarta Sans', sans-serif",
               letterSpacing: '0.02em',
             }}>{item.label}</span>

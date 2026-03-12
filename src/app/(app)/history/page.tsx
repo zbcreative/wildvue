@@ -12,11 +12,11 @@ const SIGNED_URL_EXPIRY = 3600
 function formatItemDate(iso: string): string {
   const d    = new Date(iso)
   const now  = new Date()
-  const diff = now.getTime() - d.getTime()
-  const days = Math.floor(diff / 86_400_000)
+  const todayStart     = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const yesterdayStart = new Date(todayStart.getTime() - 86_400_000)
   const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
-  if (days === 0) return `Today · ${time}`
-  if (days === 1) return `Yesterday · ${time}`
+  if (d >= todayStart)     return `Today · ${time}`
+  if (d >= yesterdayStart) return `Yesterday · ${time}`
   return `${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} · ${time}`
 }
 
