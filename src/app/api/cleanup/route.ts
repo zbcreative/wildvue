@@ -31,11 +31,19 @@ export async function POST(request: NextRequest) {
     // Credit check
     const { data: credits } = await supabase
       .from('credits')
-      .select('remaining, lifetime_used, is_pro')
+      .select('remaining, lifetime_used, is_pro, day_pass_expires_at')
       .eq('user_id', user.id)
       .single()
 
-    if (!credits || credits.remaining <= 0) {
+    if (!credits) {
+      return NextResponse.json({ error: 'No credits remaining' }, { status: 402 })
+    }
+
+    const isPro = credits.is_pro
+    const dayPassActive = credits.day_pass_expires_at != null && new Date(credits.day_pass_expires_at) > new Date()
+    const hasCredits = credits.remaining > 0
+
+    if (!isPro && !dayPassActive && !hasCredits) {
       return NextResponse.json({ error: 'No credits remaining' }, { status: 402 })
     }
 
@@ -88,18 +96,21 @@ export async function POST(request: NextRequest) {
     const outputBase64 = imagePart.inlineData.data
     const outputMime = imagePart.inlineData.mimeType
 
-    // Decrement credit only after successful cleanup
-    await supabase
-      .from('credits')
-      .update({
-        remaining: credits.remaining - 1,
-        lifetime_used: credits.lifetime_used + 1
-      })
-      .eq('user_id', user.id)
+    // Decrement credit only after successful cleanup (skip if pro or day pass active)
+    if (!isPro && !dayPassActive) {
+      await supabase
+        .from('credits')
+        .update({
+          remaining: credits.remaining - 1,
+          lifetime_used: credits.lifetime_used + 1,
+        })
+        .eq('user_id', user.id)
+    }
 
     // Persist original + cleaned images to Storage and record in cleanups table.
     // Wrapped in try/catch so a storage failure never blocks the response —
     // the user already paid a credit so they must get their image back.
+    let cleanupId: string | null = null
     try {
       const ts   = Date.now()
       const rand = Math.random().toString(36).slice(2, 7)
@@ -133,25 +144,29 @@ export async function POST(request: NextRequest) {
         if (origSigned.error)    console.error('Signed URL (original) error:', origSigned.error)
         if (cleanedSigned.error) console.error('Signed URL (cleaned)  error:', cleanedSigned.error)
 
-        const { error: insertError } = await supabase.from('cleanups').insert({
+        const { data: insertData, error: insertError } = await supabase.from('cleanups').insert({
           user_id:    user.id,
           input_url:  originalPath,
           output_url: cleanedPath,
           status:     'completed',
-        })
+        }).select('id').single()
         if (insertError) console.error('Cleanups insert error:', insertError)
+        if (insertData) cleanupId = insertData.id
       } else {
-        if (origUpload.error)   console.error('Original upload error:', origUpload.error)
+        if (origUpload.error)    console.error('Original upload error:', origUpload.error)
         if (cleanedUpload.error) console.error('Cleaned upload error:', cleanedUpload.error)
       }
     } catch (storageErr) {
       console.error('Storage/DB save failed (non-fatal):', storageErr)
     }
 
+    const creditsRemaining = !isPro && !dayPassActive ? credits.remaining - 1 : credits.remaining
+
     return NextResponse.json({
       image: `data:${outputMime};base64,${outputBase64}`,
-      creditsRemaining: credits.remaining - 1,
-      isPro: credits.is_pro,
+      creditsRemaining,
+      isPro,
+      cleanupId,
     })
 
   } catch (error: unknown) {

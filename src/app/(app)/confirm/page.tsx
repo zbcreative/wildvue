@@ -9,6 +9,7 @@ export default function ConfirmPage() {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [credits, setCredits] = useState<number | null>(null)
   const [isPro, setIsPro] = useState(false)
+  const [dayPassExpiresAt, setDayPassExpiresAt] = useState<string | null>(null)
 
   useEffect(() => {
     const url = sessionStorage.getItem('wildvue_selected_image')
@@ -23,11 +24,12 @@ export default function ConfirmPage() {
       if (!user) return
       const { data } = await supabase
         .from('credits')
-        .select('remaining, is_pro')
+        .select('remaining, is_pro, day_pass_expires_at')
         .eq('user_id', user.id)
         .single()
       if (data) {
         setCredits(data.remaining)
+        setDayPassExpiresAt(data.day_pass_expires_at ?? null)
         if (cached === null) setIsPro(data.is_pro)
       }
     }
@@ -163,35 +165,36 @@ export default function ConfirmPage() {
               <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
             </svg>
           </div>
-          <div style={{ flex: 1, fontSize: '12px', color: 'rgba(26,46,30,0.55)' }}>
-            {credits === null
-              ? '...'
-              : isPro
-                ? <><strong style={{ color: '#4A7C59', fontWeight: 600 }}>Unlimited</strong> cleanups</>
-                : <><strong style={{ color: 'var(--sage)', fontWeight: 600 }}>{credits}</strong> cleanups left this month</>
-            }
-          </div>
-          {isPro ? (
-            <div style={{
-              fontSize: '9px',
-              fontWeight: 700,
-              color: '#1A2E1E',
-              background: '#E8D5A3',
-              borderRadius: '100px',
-              padding: '3px 10px',
-              flexShrink: 0,
-            }}>
-              Pro ✦
-            </div>
-          ) : (
-            <div onClick={() => router.push('/upgrade')} style={{
-              fontSize: '11px', fontWeight: 600,
-              color: '#FAF5E8', background: 'var(--sage)',
-              borderRadius: '100px', padding: '5px 12px', cursor: 'pointer', flexShrink: 0,
-            }}>
-              Get more
-            </div>
-          )}
+          {(() => {
+            const isDayPassActive = dayPassExpiresAt !== null && new Date(dayPassExpiresAt) > new Date()
+            return (
+              <>
+                <div style={{ flex: 1, fontSize: '12px', color: 'rgba(26,46,30,0.55)' }}>
+                  {credits === null
+                    ? '...'
+                    : isPro
+                      ? <><strong style={{ color: '#4A7C59', fontWeight: 600 }}>Unlimited</strong> cleanups</>
+                      : isDayPassActive
+                        ? <strong style={{ color: '#4A7C59', fontWeight: 600 }}>Day Pass active</strong>
+                        : <><strong style={{ color: 'var(--sage)', fontWeight: 600 }}>{credits}</strong> cleanups left this month</>
+                  }
+                </div>
+                {isPro ? (
+                  <div style={{ fontSize: '9px', fontWeight: 700, color: '#1A2E1E', background: '#E8D5A3', borderRadius: '100px', padding: '3px 10px', flexShrink: 0 }}>
+                    Pro ✦
+                  </div>
+                ) : isDayPassActive ? (
+                  <div style={{ fontSize: '9px', fontWeight: 700, color: '#1A2E1E', background: '#E8D5A3', borderRadius: '100px', padding: '3px 10px', flexShrink: 0 }}>
+                    24h ✦
+                  </div>
+                ) : (
+                  <div onClick={() => router.push('/upgrade')} style={{ fontSize: '11px', fontWeight: 600, color: '#FAF5E8', background: 'var(--sage)', borderRadius: '100px', padding: '5px 12px', cursor: 'pointer', flexShrink: 0 }}>
+                    Get more
+                  </div>
+                )}
+              </>
+            )
+          })()}
         </div>
 
         {/* Primary CTA */}

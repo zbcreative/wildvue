@@ -7,7 +7,7 @@ import type { PurchasesOffering, PurchasesPackage } from '@revenuecat/purchases-
 import { getOfferings, purchasePackage, getCustomerInfo, restorePurchases } from '@/lib/revenuecat'
 import { createClient } from '@/lib/supabase'
 
-type Plan = 'monthly' | 'yearly' | 'pack'
+type Plan = 'monthly' | 'yearly' | 'daypass'
 
 interface LabelProps {
   text: string
@@ -155,7 +155,7 @@ export default function UpgradePage() {
     if (plan === 'yearly') return offering.annual
     return (
       offering.availablePackages.find(
-        (p) => p !== offering.monthly && p !== offering.annual,
+        (p) => (p.product as { productIdentifier?: string }).productIdentifier === 'com.wildvue.day_pass',
       ) ?? null
     )
   }
@@ -163,7 +163,7 @@ export default function UpgradePage() {
   const ctaText: Record<Plan, string> = {
     yearly: 'Get Pro Yearly 🪄',
     monthly: 'Get Pro Monthly 🪄',
-    pack: 'Get 5-Pack 🪄',
+    daypass: 'Get Day Pass 🪄',
   }
 
   const handlePurchase = async () => {
@@ -180,16 +180,10 @@ export default function UpgradePage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('No authenticated user')
 
-      if (selected === 'pack') {
-        const { data: credits } = await supabase
-          .from('credits')
-          .select('remaining')
-          .eq('user_id', user.id)
-          .single()
-
+      if (selected === 'daypass') {
         await supabase
           .from('credits')
-          .update({ remaining: (credits?.remaining ?? 0) + 5 })
+          .update({ day_pass_expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() })
           .eq('user_id', user.id)
       } else {
         const customerInfo = await getCustomerInfo()
@@ -330,15 +324,15 @@ export default function UpgradePage() {
           label={{ text: 'BEST VALUE', bg: 'var(--sage)', color: 'var(--cream)' }}
         />
 
-        {/* 5-Pack */}
+        {/* Day Pass */}
         <PlanRow
-          emoji="📦"
-          name="5-Pack"
-          perks={['5 barrier-free cleanups']}
-          price="$3.99"
+          emoji="🎟️"
+          name="Day Pass"
+          perks={['Unlimited cleanups for 24 hours']}
+          price="$9.99"
           period="one time"
-          selected={selected === 'pack'}
-          onSelect={() => setSelected('pack')}
+          selected={selected === 'daypass'}
+          onSelect={() => setSelected('daypass')}
           border="1.5px solid #1A2E1E"
           label={{ text: 'ONE-TIME', bg: '#1A2E1E', color: 'var(--cream)' }}
         />

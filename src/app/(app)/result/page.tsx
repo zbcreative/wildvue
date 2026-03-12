@@ -9,7 +9,6 @@ import { createClient } from '@/lib/supabase'
 // Returns the watermarked blob; falls back to the original on any failure.
 // ---------------------------------------------------------------------------
 async function applyWatermark(sourceUrl: string): Promise<Blob> {
-  // Ensure Google Fonts (Fraunces) are ready before measuring/drawing text
   await document.fonts.ready
 
   return new Promise((resolve, reject) => {
@@ -23,11 +22,8 @@ async function applyWatermark(sourceUrl: string): Promise<Blob> {
       const ctx = canvas.getContext('2d')
       if (!ctx) { reject(new Error('No 2d context')); return }
 
-      // Draw the source image at full resolution
       ctx.drawImage(img, 0, 0)
 
-      // Scale watermark proportionally to image width
-      // (looks like ~10px text on a typical 375px-wide phone display)
       const fontSize   = Math.round(canvas.width * 0.026)
       const padX       = Math.round(fontSize * 1.2)
       const padY       = Math.round(fontSize * 0.5)
@@ -41,18 +37,15 @@ async function applyWatermark(sourceUrl: string): Promise<Blob> {
       const pillY    = canvas.height - pillH - bottomGap
       const radius   = pillH / 2
 
-      // Pill background
       ctx.beginPath()
       ctx.roundRect(pillX, pillY, pillW, pillH, radius)
       ctx.fillStyle = 'rgba(26,46,30,0.5)'
       ctx.fill()
 
-      // Pill border
       ctx.strokeStyle = 'rgba(232,213,163,0.2)'
       ctx.lineWidth   = Math.max(1, Math.round(canvas.width * 0.001))
       ctx.stroke()
 
-      // Text
       ctx.fillStyle    = '#FAF5E8'
       ctx.textAlign    = 'center'
       ctx.textBaseline = 'middle'
@@ -70,10 +63,6 @@ async function applyWatermark(sourceUrl: string): Promise<Blob> {
   })
 }
 
-// ---------------------------------------------------------------------------
-// Returns the blob to export — watermarked for free users, raw for pro.
-// Falls back to raw blob on canvas failure.
-// ---------------------------------------------------------------------------
 async function getExportBlob(resultUrl: string, isPro: boolean): Promise<Blob> {
   const rawRes  = await fetch(resultUrl)
   const rawBlob = await rawRes.blob()
@@ -88,27 +77,27 @@ async function getExportBlob(resultUrl: string, isPro: boolean): Promise<Blob> {
 }
 
 // ---------------------------------------------------------------------------
-// Inner page component — reads search params to detect entry point
+// Inner page component
 // ---------------------------------------------------------------------------
 function ResultPageContent() {
   const router       = useRouter()
   const searchParams = useSearchParams()
 
-  const [originalUrl, setOriginalUrl] = useState<string | null>(null)
-  const [resultUrl,   setResultUrl]   = useState<string | null>(null)
-  const [isAfter,     setIsAfter]     = useState(true)
-  const [saved,       setSaved]       = useState(false)
-  const [isPro,       setIsPro]       = useState(false)
+  const [originalUrl,  setOriginalUrl]  = useState<string | null>(null)
+  const [resultUrl,    setResultUrl]    = useState<string | null>(null)
+  const [isAfter,      setIsAfter]      = useState(true)
+  const [saved,        setSaved]        = useState(false)
+  const [isPro,        setIsPro]        = useState(false)
+  const [cleanupId,    setCleanupId]    = useState<string | null>(null)
+  const [venueName,    setVenueName]    = useState('')
+  const [isPosted,     setIsPosted]     = useState(false)
+  const [isPosting,    setIsPosting]    = useState(false)
 
   useEffect(() => {
     const fromHistory = searchParams.get('from') === 'history'
-    const cleanupId   = searchParams.get('id')
+    const idParam     = searchParams.get('id')
 
-    if (fromHistory && cleanupId) {
-      // -----------------------------------------------------------------------
-      // Entry point: navigated from history page.
-      // Fetch the cleanup record and generate fresh signed URLs (1-hour expiry).
-      // -----------------------------------------------------------------------
+    if (fromHistory && idParam) {
       const load = async () => {
         const supabase = createClient()
         const { data: { user } } = await supabase.auth.getUser()
@@ -117,7 +106,7 @@ function ResultPageContent() {
         const { data: cleanup } = await supabase
           .from('cleanups')
           .select('input_url, output_url')
-          .eq('id', cleanupId)
+          .eq('id', idParam)
           .eq('user_id', user.id)
           .single()
 
@@ -136,8 +125,8 @@ function ResultPageContent() {
 
         setOriginalUrl(inputSigned.data?.signedUrl  ?? null)
         setResultUrl(outputSigned.data?.signedUrl   ?? null)
+        setCleanupId(idParam)
 
-        // Load pro status
         const cached = sessionStorage.getItem('wildvue_is_pro')
         if (cached !== null) {
           setIsPro(cached === 'true')
@@ -152,15 +141,14 @@ function ResultPageContent() {
       }
       load()
     } else {
-      // -----------------------------------------------------------------------
-      // Entry point: fresh cleanup via the normal processing flow.
-      // Images are stored as data URIs in sessionStorage.
-      // -----------------------------------------------------------------------
       const original = sessionStorage.getItem('wildvue_selected_image')
       const result   = sessionStorage.getItem('wildvue_result_image')
       if (!original || !result) { router.push('/home'); return }
       setOriginalUrl(original)
       setResultUrl(result)
+
+      const storedCleanupId = sessionStorage.getItem('wildvue_cleanup_id')
+      if (storedCleanupId) setCleanupId(storedCleanupId)
 
       const cached = sessionStorage.getItem('wildvue_is_pro')
       if (cached !== null) {
@@ -182,8 +170,6 @@ function ResultPageContent() {
     }
   }, [router, searchParams])
 
-  const toggle = () => setIsAfter(v => !v)
-
   const handleSave = async () => {
     if (!resultUrl) return
     try {
@@ -197,7 +183,6 @@ function ResultPageContent() {
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
     } catch {
-      // Last-resort: direct data-URL download (no watermark on failure)
       const a    = document.createElement('a')
       a.href     = resultUrl
       a.download = `wildvue-${Date.now()}.jpg`
@@ -237,52 +222,44 @@ function ResultPageContent() {
     input.click()
   }
 
-  if (!originalUrl || !resultUrl) return null
+  const handlePost = async () => {
+    if (!cleanupId || isPosted || isPosting) return
+    setIsPosting(true)
+    try {
+      const supabase = createClient()
+      await supabase
+        .from('cleanups')
+        .update({ is_public: true, venue_name: venueName.trim() || null })
+        .eq('id', cleanupId)
+      setIsPosted(true)
+    } catch (err) {
+      console.error('Post failed:', err)
+    } finally {
+      setIsPosting(false)
+    }
+  }
 
-  const glowShadow = '0 0 0 2.5px rgba(232,213,163,0.6), 0 0 20px rgba(232,213,163,0.25)'
+  if (!originalUrl || !resultUrl) return null
 
   return (
     <main style={{
+      position: 'relative',
       height: 'calc(100vh - 72px)',
-      background: 'var(--sage)',
-      display: 'flex',
-      flexDirection: 'column',
-      fontFamily: "'Plus Jakarta Sans', sans-serif",
       overflow: 'hidden',
+      background: '#1A2E1E',
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
     }}>
 
-      {/* TOP NAV — wordmark only */}
+      {/* ------------------------------------------------------------------ */}
+      {/* FULL-BLEED PHOTO LAYER                                              */}
+      {/* ------------------------------------------------------------------ */}
       <div style={{
-        paddingTop: 'calc(52px + env(safe-area-inset-top))',
-        paddingLeft: '24px',
-        paddingRight: '24px',
-        flexShrink: 0,
+        position: 'absolute',
+        inset: 0,
+        zIndex: 1,
+        boxShadow: isAfter ? 'inset 0 0 0 3px rgba(232,213,163,0.55)' : 'none',
+        transition: 'box-shadow 0.45s ease',
       }}>
-        <span style={{
-          fontFamily: "'Fraunces', serif",
-          fontWeight: 700,
-          fontSize: '32px',
-          letterSpacing: '-0.02em',
-          color: 'var(--cream)',
-        }}>
-          Wild<em style={{ fontStyle: 'italic', fontWeight: 900, color: 'var(--gold)' }}>vue</em>
-        </span>
-      </div>
-
-      {/* PHOTO AREA */}
-      <div
-        onClick={toggle}
-        style={{
-          flex: 1,
-          position: 'relative',
-          margin: '14px 18px 0',
-          borderRadius: '16px',
-          overflow: 'hidden',
-          cursor: 'pointer',
-          boxShadow: isAfter ? glowShadow : 'none',
-          transition: 'box-shadow 0.45s ease',
-        }}
-      >
         {/* After — result image */}
         <img
           src={resultUrl}
@@ -313,186 +290,333 @@ function ResultPageContent() {
           }}
         />
 
-        {/* "Barriers removed" badge — top left */}
+        {/* Bottom gradient fade */}
         <div style={{
           position: 'absolute',
-          top: '12px',
-          left: '12px',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '45%',
+          background: 'linear-gradient(to bottom, transparent, rgba(26,46,30,0.15))',
+          pointerEvents: 'none',
+        }} />
+      </div>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* TOP OVERLAYS — wordmark + barriers removed badge                    */}
+      {/* ------------------------------------------------------------------ */}
+      <div style={{
+        position: 'absolute',
+        top: 'calc(52px + env(safe-area-inset-top))',
+        left: 0,
+        right: 0,
+        zIndex: 20,
+        padding: '0 20px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        pointerEvents: 'none',
+      }}>
+        {/* Wordmark */}
+        <span style={{
+          fontFamily: "'Fraunces', serif",
+          fontWeight: 700,
+          fontSize: '26px',
+          letterSpacing: '-0.02em',
+          color: 'white',
+          textShadow: '0 1px 8px rgba(0,0,0,0.55)',
+        }}>
+          Wild<em style={{ fontStyle: 'italic', fontWeight: 900, color: '#E8D5A3' }}>vue</em>
+        </span>
+
+        {/* Barriers removed pill — only on After */}
+        <div style={{
           opacity: isAfter ? 1 : 0,
           transition: 'opacity 0.45s ease',
-          pointerEvents: 'none',
+          background: 'rgba(26,46,30,0.6)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          borderRadius: '100px',
+          padding: '5px 12px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '5px',
+        }}>
+          <span style={{ color: '#7DB88C', fontSize: '11px', fontWeight: 700 }}>✓</span>
+          <span style={{
+            color: 'var(--cream)',
+            fontSize: '11px',
+            fontWeight: 700,
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            letterSpacing: '0.01em',
+          }}>
+            Barriers removed
+          </span>
+        </div>
+      </div>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* BOTTOM ZONE — toggle pill + cream card                              */}
+      {/* ------------------------------------------------------------------ */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 15,
+      }}>
+        {/* Before / After toggle pill */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          paddingBottom: '10px',
         }}>
           <div style={{
-            background: 'var(--sage)',
-            borderRadius: '100px',
-            padding: '5px 12px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-          }}>
-            <div style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              background: '#7fff7f',
-              flexShrink: 0,
-            }} />
-            <span style={{
-              color: 'var(--cream)',
-              fontSize: '9px',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.06em',
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}>
-              Barriers removed
-            </span>
-          </div>
-        </div>
-
-        {/* Before / After toggle — bottom center */}
-        <div
-          onClick={e => e.stopPropagation()}
-          style={{
-            position: 'absolute',
-            bottom: '12px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            background: 'rgba(0,0,0,0.45)',
+            background: 'rgba(26,46,30,0.55)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
             borderRadius: '100px',
             padding: '4px',
             display: 'flex',
             gap: '2px',
-          }}
-        >
-          {(['Before', 'After'] as const).map(label => {
-            const active = (label === 'After') === isAfter
-            return (
-              <button
-                key={label}
-                onClick={() => setIsAfter(label === 'After')}
-                style={{
-                  background: active ? 'var(--cream)' : 'transparent',
-                  color: active ? 'var(--dark)' : 'rgba(255,255,255,0.5)',
-                  border: 'none',
-                  borderRadius: '100px',
-                  padding: '6px 18px',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
-                  cursor: 'pointer',
-                  transition: 'background 0.25s ease, color 0.25s ease',
-                }}
-              >
-                {label}
-              </button>
-            )
-          })}
+          }}>
+            {(['Before', 'After'] as const).map(label => {
+              const active = (label === 'After') === isAfter
+              return (
+                <button
+                  key={label}
+                  onClick={() => setIsAfter(label === 'After')}
+                  style={{
+                    background: active ? 'var(--cream)' : 'transparent',
+                    color: active ? '#1A2E1E' : 'rgba(250,245,232,0.5)',
+                    border: 'none',
+                    borderRadius: '100px',
+                    padding: '6px 20px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    cursor: 'pointer',
+                    transition: 'background 0.25s ease, color 0.25s ease',
+                  }}
+                >
+                  {label}
+                </button>
+              )
+            })}
+          </div>
         </div>
-      </div>
 
-      {/* FLOATING CREAM CARD */}
-      <div style={{
-        flexShrink: 0,
-        background: '#FAF5E8',
-        borderRadius: '22px 22px 0 0',
-        boxShadow: '0 -6px 24px rgba(0,0,0,0.12)',
-        marginTop: '12px',
-        padding: '16px 18px',
-      }}>
-        {/* Save to camera roll */}
-        <button
-          onClick={handleSave}
-          style={{
-            width: '100%',
-            padding: '14px 20px',
-            borderRadius: '14px',
-            border: 'none',
-            background: saved ? '#3a6347' : '#4A7C59',
-            color: '#FAF5E8',
-            fontSize: '15px',
-            fontWeight: 700,
+        {/* Cream card */}
+        <div style={{
+          background: '#FAF5E8',
+          borderRadius: '22px 22px 0 0',
+          boxShadow: '0 -6px 24px rgba(0,0,0,0.14)',
+          padding: '16px 18px 20px',
+        }}>
+          {/* Title */}
+          <h2 style={{
             fontFamily: "'Fraunces', serif",
+            fontWeight: 700,
+            fontSize: '20px',
+            color: '#1A2E1E',
+            margin: '0 0 12px',
             letterSpacing: '-0.01em',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            boxShadow: '0 6px 18px rgba(74,124,89,0.25)',
-            marginBottom: '10px',
-            transition: 'background 0.3s ease',
-          }}
-        >
-          {saved ? (
-            <>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FAF5E8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-              Saved!
-            </>
-          ) : (
-            <>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FAF5E8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
-              </svg>
-              Save to camera roll
-            </>
-          )}
-        </button>
+          }}>
+            Barrier <em style={{ fontStyle: 'italic', color: '#C4A35A' }}>free.</em> 🪄
+          </h2>
 
-        {/* Secondary row */}
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button onClick={handleShare} style={secondaryBtn}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-            </svg>
-            Share
-          </button>
-          <button onClick={handleCleanAnother} style={secondaryBtn}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-              <circle cx="12" cy="13" r="4"/>
-            </svg>
-            Clean another
-          </button>
+          {/* Primary action row — Save + Share */}
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
+            <button
+              onClick={handleSave}
+              style={{
+                flex: 2,
+                padding: '13px 16px',
+                borderRadius: '14px',
+                border: 'none',
+                background: saved ? '#3a6347' : '#4A7C59',
+                color: '#FAF5E8',
+                fontSize: '14px',
+                fontWeight: 700,
+                fontFamily: "'Fraunces', serif",
+                letterSpacing: '-0.01em',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '7px',
+                boxShadow: '0 4px 14px rgba(74,124,89,0.25)',
+                transition: 'background 0.3s ease',
+              }}
+            >
+              {saved ? (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FAF5E8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Saved!
+                </>
+              ) : (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FAF5E8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  Save
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={handleShare}
+              style={{
+                flex: 1,
+                padding: '13px 12px',
+                borderRadius: '14px',
+                border: '1.5px solid rgba(74,124,89,0.25)',
+                background: 'rgba(74,124,89,0.04)',
+                color: 'var(--sage)',
+                fontSize: '14px',
+                fontWeight: 700,
+                fontFamily: "'Fraunces', serif",
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '7px',
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+              Share
+            </button>
+          </div>
+
+          {/* Community card */}
+          {!isPosted ? (
+            <div style={{
+              background: 'rgba(74,124,89,0.08)',
+              border: '1px solid rgba(74,124,89,0.18)',
+              borderRadius: '16px',
+              padding: '13px 14px',
+              marginBottom: '12px',
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '10px',
+                gap: '8px',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: 0 }}>
+                  <span style={{ fontSize: '20px', flexShrink: 0 }}>🔎</span>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{
+                      fontWeight: 700,
+                      color: '#1A2E1E',
+                      fontSize: '13px',
+                      margin: 0,
+                      lineHeight: 1.3,
+                    }}>
+                      Share to the Wildvue community?
+                    </p>
+                    <p style={{
+                      color: 'rgba(26,46,30,0.5)',
+                      fontSize: '11px',
+                      margin: '2px 0 0',
+                    }}>
+                      Inspire other wildlife lovers
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={handlePost}
+                  disabled={!cleanupId || isPosting}
+                  style={{
+                    background: cleanupId ? '#C4A35A' : 'rgba(196,163,90,0.4)',
+                    color: '#FAF5E8',
+                    fontWeight: 700,
+                    borderRadius: '20px',
+                    padding: '8px 16px',
+                    border: 'none',
+                    cursor: cleanupId && !isPosting ? 'pointer' : 'not-allowed',
+                    fontSize: '12px',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    flexShrink: 0,
+                    transition: 'opacity 0.15s ease',
+                    opacity: isPosting ? 0.7 : 1,
+                  }}
+                >
+                  {isPosting ? '…' : 'Post it'}
+                </button>
+              </div>
+
+              <input
+                value={venueName}
+                onChange={(e) => setVenueName(e.target.value)}
+                placeholder="📍 Where was this? (optional)"
+                style={{
+                  width: '100%',
+                  background: 'rgba(26,46,30,0.05)',
+                  border: '1px solid rgba(26,46,30,0.1)',
+                  borderRadius: '10px',
+                  padding: '9px 12px',
+                  fontSize: '12px',
+                  color: '#1A2E1E',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  boxSizing: 'border-box',
+                  outline: 'none',
+                }}
+              />
+            </div>
+          ) : (
+            <div style={{
+              background: 'rgba(74,124,89,0.08)',
+              border: '1px solid rgba(74,124,89,0.18)',
+              borderRadius: '16px',
+              padding: '13px 14px',
+              marginBottom: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            }}>
+              <span style={{ fontSize: '20px' }}>✅</span>
+              <div>
+                <p style={{ fontWeight: 700, color: '#4A7C59', fontSize: '13px', margin: 0 }}>Posted to the community!</p>
+                <p style={{ color: 'rgba(26,46,30,0.5)', fontSize: '11px', margin: '2px 0 0' }}>Your photo is now on the Explore feed</p>
+              </div>
+            </div>
+          )}
+
+          {/* Clean another link */}
+          <p
+            onClick={handleCleanAnother}
+            style={{
+              textAlign: 'center',
+              fontSize: '12px',
+              color: 'rgba(26,46,30,0.35)',
+              cursor: 'pointer',
+              margin: 0,
+              textDecoration: 'underline',
+              textUnderlineOffset: '2px',
+            }}
+          >
+            Clean another →
+          </p>
         </div>
       </div>
     </main>
   )
 }
 
-// ---------------------------------------------------------------------------
-// Default export — wraps content in Suspense (required by useSearchParams
-// in the Next.js App Router).
-// ---------------------------------------------------------------------------
 export default function ResultPage() {
   return (
     <Suspense>
       <ResultPageContent />
     </Suspense>
   )
-}
-
-const secondaryBtn: React.CSSProperties = {
-  flex: 1,
-  padding: '11px 8px',
-  borderRadius: '12px',
-  border: '1.5px solid rgba(74,124,89,0.25)',
-  background: 'rgba(74,124,89,0.04)',
-  color: 'var(--sage)',
-  fontSize: '11px',
-  fontWeight: 600,
-  fontFamily: "'Plus Jakarta Sans', sans-serif",
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '6px',
 }

@@ -789,6 +789,7 @@ export default function HomePage() {
   const router = useRouter()
   const [credits, setCredits] = useState<number | null>(null)
   const [isPro, setIsPro] = useState(false)
+  const [dayPassExpiresAt, setDayPassExpiresAt] = useState<string | null>(null)
   const [firstName, setFirstName] = useState('there')
   const [timeGreeting, setTimeGreeting] = useState('')
   const [wildlifeLine, setWildlifeLine] = useState('')
@@ -813,9 +814,10 @@ export default function HomePage() {
     setFirstName(name)
     const cached = sessionStorage.getItem('wildvue_is_pro')
     if (cached !== null) setIsPro(cached === 'true')
-    const { data } = await supabase.from('credits').select('remaining, is_pro').eq('user_id', user.id).single()
+    const { data } = await supabase.from('credits').select('remaining, is_pro, day_pass_expires_at').eq('user_id', user.id).single()
     if (data) {
       setCredits(data.remaining)
+      setDayPassExpiresAt(data.day_pass_expires_at ?? null)
       if (cached === null) setIsPro(data.is_pro)
     }
   }
@@ -870,7 +872,8 @@ export default function HomePage() {
   }
 
   const animal = animalIndex !== null ? ANIMAL_DATA[animalIndex] : null
-  const noCredits = credits !== null && credits <= 0
+  const isDayPassActive = dayPassExpiresAt !== null && new Date(dayPassExpiresAt) > new Date()
+  const noCredits = credits !== null && credits <= 0 && !isPro && !isDayPassActive
 
   return (
     <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 72px)', background: 'var(--sage)', overflow: 'hidden' }}>
@@ -1038,7 +1041,9 @@ export default function HomePage() {
                 ? '...'
                 : isPro
                   ? <span style={{ color: 'var(--sage)', fontWeight: 600 }}>Unlimited cleanups</span>
-                  : <><strong style={{ color: 'var(--sage)', fontWeight: 600 }}>{credits}</strong> cleanups left this month</>
+                  : isDayPassActive
+                    ? <span style={{ color: 'var(--sage)', fontWeight: 600 }}>Day Pass active</span>
+                    : <><strong style={{ color: 'var(--sage)', fontWeight: 600 }}>{credits}</strong> cleanups left this month</>
               }
             </div>
             {isPro ? (
@@ -1052,6 +1057,18 @@ export default function HomePage() {
                 flexShrink: 0,
               }}>
                 Pro ✦
+              </div>
+            ) : isDayPassActive ? (
+              <div style={{
+                fontSize: '9px',
+                fontWeight: 700,
+                color: '#1A2E1E',
+                background: '#E8D5A3',
+                borderRadius: '100px',
+                padding: '3px 10px',
+                flexShrink: 0,
+              }}>
+                24h ✦
               </div>
             ) : (
               <div onClick={() => router.push('/upgrade')} style={{
