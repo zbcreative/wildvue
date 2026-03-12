@@ -112,10 +112,10 @@ export default function ExplorePage() {
     ])
 
     const outputUrlMap: Record<string, string> = {}
-    outputSignedRes.data?.forEach(s => { if (s.signedUrl) outputUrlMap[s.path] = s.signedUrl })
+    outputSignedRes.data?.forEach(s => { if (s.path && s.signedUrl) outputUrlMap[s.path] = s.signedUrl })
 
     const inputUrlMap: Record<string, string> = {}
-    inputSignedRes.data?.forEach(s => { if (s.signedUrl) inputUrlMap[s.path] = s.signedUrl })
+    inputSignedRes.data?.forEach(s => { if (s.path && s.signedUrl) inputUrlMap[s.path] = s.signedUrl })
 
     const built: FeedCard[] = cleanupData.map(c => {
       const profile = profileMap[c.user_id]
