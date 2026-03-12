@@ -26,7 +26,7 @@ export async function purchasePackage(pkg: PurchasesPackage) {
 
 export async function getOfferings() {
   try {
-    const { offerings } = await Purchases.getOfferings()
+    const offerings = await Purchases.getOfferings()
     return offerings.current
   } catch (error) {
     console.error('[RevenueCat] getOfferings error:', error)
