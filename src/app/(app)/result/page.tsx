@@ -243,7 +243,9 @@ function ResultPageContent() {
 
   return (
     <main style={{
-      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%',
       height: 'calc(100vh - 72px)',
       overflow: 'hidden',
       background: '#1A2E1E',
@@ -251,14 +253,15 @@ function ResultPageContent() {
     }}>
 
       {/* ------------------------------------------------------------------ */}
-      {/* FULL-BLEED PHOTO LAYER                                              */}
+      {/* PHOTO SECTION — fills all space above the cream card               */}
       {/* ------------------------------------------------------------------ */}
       <div style={{
-        position: 'absolute',
-        inset: 0,
-        zIndex: 1,
-        boxShadow: isAfter ? 'inset 0 0 0 3px rgba(232,213,163,0.55)' : 'none',
-        transition: 'box-shadow 0.45s ease',
+        position: 'relative',
+        flex: 1,
+        minHeight: 0,
+        width: '100vw',
+        marginLeft: 'calc(50% - 50vw)',
+        background: '#1A2E1E',
       }}>
         {/* After — result image */}
         <img
@@ -290,153 +293,143 @@ function ResultPageContent() {
           }}
         />
 
-        {/* Bottom gradient fade */}
+        {/* Wordmark + barriers removed badge — top of photo area */}
         <div style={{
           position: 'absolute',
-          bottom: 0,
+          top: 16,
           left: 0,
           right: 0,
-          height: '45%',
-          background: 'linear-gradient(to bottom, transparent, rgba(26,46,30,0.15))',
-          pointerEvents: 'none',
-        }} />
-      </div>
-
-      {/* ------------------------------------------------------------------ */}
-      {/* TOP OVERLAYS — wordmark + barriers removed badge                    */}
-      {/* ------------------------------------------------------------------ */}
-      <div style={{
-        position: 'absolute',
-        top: 'calc(52px + env(safe-area-inset-top))',
-        left: 0,
-        right: 0,
-        zIndex: 20,
-        padding: '0 20px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        pointerEvents: 'none',
-      }}>
-        {/* Wordmark */}
-        <span style={{
-          fontFamily: "'Fraunces', serif",
-          fontWeight: 700,
-          fontSize: '26px',
-          letterSpacing: '-0.02em',
-          color: 'white',
-          textShadow: '0 1px 8px rgba(0,0,0,0.55)',
-        }}>
-          Wild<em style={{ fontStyle: 'italic', fontWeight: 900, color: '#E8D5A3' }}>vue</em>
-        </span>
-
-        {/* Barriers removed pill — only on After */}
-        <div style={{
-          opacity: isAfter ? 1 : 0,
-          transition: 'opacity 0.45s ease',
-          background: 'rgba(26,46,30,0.6)',
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)',
-          borderRadius: '100px',
-          padding: '5px 12px',
+          zIndex: 20,
+          padding: '0 20px',
           display: 'flex',
           alignItems: 'center',
-          gap: '5px',
+          justifyContent: 'space-between',
+          pointerEvents: 'none',
         }}>
-          <span style={{ color: '#7DB88C', fontSize: '11px', fontWeight: 700 }}>✓</span>
+          {/* Wordmark */}
           <span style={{
-            color: 'var(--cream)',
-            fontSize: '11px',
+            fontFamily: "'Fraunces', serif",
             fontWeight: 700,
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            letterSpacing: '0.01em',
+            fontSize: '26px',
+            letterSpacing: '-0.02em',
+            color: 'white',
+            textShadow: '0 1px 8px rgba(0,0,0,0.55)',
           }}>
-            Barriers removed
+            Wild<em style={{ fontStyle: 'italic', fontWeight: 900, color: '#E8D5A3' }}>vue</em>
           </span>
-        </div>
-      </div>
 
-      {/* ------------------------------------------------------------------ */}
-      {/* BOTTOM ZONE — toggle pill + cream card                              */}
-      {/* ------------------------------------------------------------------ */}
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 15,
-      }}>
-        {/* Before / After toggle pill */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          paddingBottom: '10px',
-        }}>
+          {/* Barriers removed pill — only on After */}
           <div style={{
-            background: 'rgba(26,46,30,0.55)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
+            opacity: isAfter ? 1 : 0,
+            transition: 'opacity 0.45s ease',
+            background: 'rgba(26,46,30,0.6)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
             borderRadius: '100px',
-            padding: '4px',
+            padding: '5px 12px',
             display: 'flex',
-            gap: '2px',
+            alignItems: 'center',
+            gap: '5px',
           }}>
-            {(['Before', 'After'] as const).map(label => {
-              const active = (label === 'After') === isAfter
-              return (
-                <button
-                  key={label}
-                  onClick={() => setIsAfter(label === 'After')}
-                  style={{
-                    background: active ? 'var(--cream)' : 'transparent',
-                    color: active ? '#1A2E1E' : 'rgba(250,245,232,0.5)',
-                    border: 'none',
-                    borderRadius: '100px',
-                    padding: '6px 20px',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
-                    cursor: 'pointer',
-                    transition: 'background 0.25s ease, color 0.25s ease',
-                  }}
-                >
-                  {label}
-                </button>
-              )
-            })}
+            <span style={{ color: '#7DB88C', fontSize: '11px', fontWeight: 700 }}>✓</span>
+            <span style={{
+              color: 'var(--cream)',
+              fontSize: '11px',
+              fontWeight: 700,
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              letterSpacing: '0.01em',
+            }}>
+              Barriers removed
+            </span>
           </div>
         </div>
 
+      </div>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* CREAM CARD — fixed bottom sheet, natural height only               */}
+      {/* ------------------------------------------------------------------ */}
         {/* Cream card */}
         <div style={{
+          flex: '0 0 auto',
+          position: 'relative',
+          zIndex: 2,
           background: '#FAF5E8',
           borderRadius: '22px 22px 0 0',
           boxShadow: '0 -6px 24px rgba(0,0,0,0.14)',
-          padding: '16px 18px 20px',
+          padding: '12px 16px 16px',
+          marginTop: '-22px',
         }}>
+          {/* Before / After toggle pill — floats above card top edge */}
+          <div style={{
+            position: 'absolute',
+            top: '-34px',
+            left: 0,
+            right: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            pointerEvents: 'none',
+          }}>
+            <div style={{
+              pointerEvents: 'auto',
+              background: 'rgba(26,46,30,0.55)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              borderRadius: '100px',
+              padding: '3px',
+              display: 'flex',
+              gap: '2px',
+            }}>
+              {(['Before', 'After'] as const).map(label => {
+                const active = (label === 'After') === isAfter
+                return (
+                  <button
+                    key={label}
+                    onClick={() => setIsAfter(label === 'After')}
+                    style={{
+                      background: active ? 'var(--cream)' : 'transparent',
+                      color: active ? '#1A2E1E' : 'rgba(250,245,232,0.6)',
+                      border: 'none',
+                      borderRadius: '100px',
+                      padding: '5px 16px',
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      cursor: 'pointer',
+                      transition: 'background 0.25s ease, color 0.25s ease',
+                    }}
+                  >
+                    {label}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
           {/* Title */}
           <h2 style={{
             fontFamily: "'Fraunces', serif",
             fontWeight: 700,
-            fontSize: '20px',
+            fontSize: '18px',
             color: '#1A2E1E',
-            margin: '0 0 12px',
+            margin: '0 0 8px',
             letterSpacing: '-0.01em',
           }}>
             Barrier <em style={{ fontStyle: 'italic', color: '#C4A35A' }}>free.</em> 🪄
           </h2>
 
           {/* Primary action row — Save + Share */}
-          <div style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
             <button
               onClick={handleSave}
               style={{
                 flex: 2,
-                padding: '13px 16px',
-                borderRadius: '14px',
+                padding: '10px 14px',
+                borderRadius: '12px',
                 border: 'none',
                 background: saved ? '#3a6347' : '#4A7C59',
                 color: '#FAF5E8',
-                fontSize: '14px',
+                fontSize: '13px',
                 fontWeight: 700,
                 fontFamily: "'Fraunces', serif",
                 letterSpacing: '-0.01em',
@@ -444,21 +437,21 @@ function ResultPageContent() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '7px',
+                gap: '6px',
                 boxShadow: '0 4px 14px rgba(74,124,89,0.25)',
                 transition: 'background 0.3s ease',
               }}
             >
               {saved ? (
                 <>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FAF5E8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FAF5E8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
                   Saved!
                 </>
               ) : (
                 <>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FAF5E8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FAF5E8" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                     <polyline points="7 10 12 15 17 10"/>
                     <line x1="12" y1="15" x2="12" y2="3"/>
@@ -472,22 +465,22 @@ function ResultPageContent() {
               onClick={handleShare}
               style={{
                 flex: 1,
-                padding: '13px 12px',
-                borderRadius: '14px',
+                padding: '10px 10px',
+                borderRadius: '12px',
                 border: '1.5px solid rgba(74,124,89,0.25)',
                 background: 'rgba(74,124,89,0.04)',
                 color: 'var(--sage)',
-                fontSize: '14px',
+                fontSize: '13px',
                 fontWeight: 700,
                 fontFamily: "'Fraunces', serif",
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '7px',
+                gap: '6px',
               }}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
                 <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
                 <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
@@ -501,24 +494,24 @@ function ResultPageContent() {
             <div style={{
               background: 'rgba(74,124,89,0.08)',
               border: '1px solid rgba(74,124,89,0.18)',
-              borderRadius: '16px',
-              padding: '13px 14px',
-              marginBottom: '12px',
+              borderRadius: '14px',
+              padding: '9px 12px',
+              marginBottom: '8px',
             }}>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                marginBottom: '10px',
+                marginBottom: '7px',
                 gap: '8px',
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: 0 }}>
-                  <span style={{ fontSize: '20px', flexShrink: 0 }}>🔎</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, minWidth: 0 }}>
+                  <span style={{ fontSize: '17px', flexShrink: 0 }}>🔎</span>
                   <div style={{ minWidth: 0 }}>
                     <p style={{
                       fontWeight: 700,
                       color: '#1A2E1E',
-                      fontSize: '13px',
+                      fontSize: '12px',
                       margin: 0,
                       lineHeight: 1.3,
                     }}>
@@ -526,8 +519,8 @@ function ResultPageContent() {
                     </p>
                     <p style={{
                       color: 'rgba(26,46,30,0.5)',
-                      fontSize: '11px',
-                      margin: '2px 0 0',
+                      fontSize: '10px',
+                      margin: '1px 0 0',
                     }}>
                       Inspire other wildlife lovers
                     </p>
@@ -541,10 +534,10 @@ function ResultPageContent() {
                     color: '#FAF5E8',
                     fontWeight: 700,
                     borderRadius: '20px',
-                    padding: '8px 16px',
+                    padding: '6px 13px',
                     border: 'none',
                     cursor: cleanupId && !isPosting ? 'pointer' : 'not-allowed',
-                    fontSize: '12px',
+                    fontSize: '11px',
                     fontFamily: "'Plus Jakarta Sans', sans-serif",
                     flexShrink: 0,
                     transition: 'opacity 0.15s ease',
@@ -563,9 +556,9 @@ function ResultPageContent() {
                   width: '100%',
                   background: 'rgba(26,46,30,0.05)',
                   border: '1px solid rgba(26,46,30,0.1)',
-                  borderRadius: '10px',
-                  padding: '9px 12px',
-                  fontSize: '12px',
+                  borderRadius: '8px',
+                  padding: '7px 10px',
+                  fontSize: '11px',
                   color: '#1A2E1E',
                   fontFamily: "'Plus Jakarta Sans', sans-serif",
                   boxSizing: 'border-box',
@@ -577,17 +570,17 @@ function ResultPageContent() {
             <div style={{
               background: 'rgba(74,124,89,0.08)',
               border: '1px solid rgba(74,124,89,0.18)',
-              borderRadius: '16px',
-              padding: '13px 14px',
-              marginBottom: '12px',
+              borderRadius: '14px',
+              padding: '9px 12px',
+              marginBottom: '8px',
               display: 'flex',
               alignItems: 'center',
-              gap: '10px',
+              gap: '8px',
             }}>
-              <span style={{ fontSize: '20px' }}>✅</span>
+              <span style={{ fontSize: '17px' }}>✅</span>
               <div>
-                <p style={{ fontWeight: 700, color: '#4A7C59', fontSize: '13px', margin: 0 }}>Posted to the community!</p>
-                <p style={{ color: 'rgba(26,46,30,0.5)', fontSize: '11px', margin: '2px 0 0' }}>Your photo is now on the Explore feed</p>
+                <p style={{ fontWeight: 700, color: '#4A7C59', fontSize: '12px', margin: 0 }}>Posted to the community!</p>
+                <p style={{ color: 'rgba(26,46,30,0.5)', fontSize: '10px', margin: '1px 0 0' }}>Your photo is now on the Explore feed</p>
               </div>
             </div>
           )}
@@ -597,7 +590,7 @@ function ResultPageContent() {
             onClick={handleCleanAnother}
             style={{
               textAlign: 'center',
-              fontSize: '12px',
+              fontSize: '11px',
               color: 'rgba(26,46,30,0.35)',
               cursor: 'pointer',
               margin: 0,
@@ -608,7 +601,6 @@ function ResultPageContent() {
             Clean another →
           </p>
         </div>
-      </div>
     </main>
   )
 }
