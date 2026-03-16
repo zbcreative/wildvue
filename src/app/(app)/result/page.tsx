@@ -296,7 +296,7 @@ function ResultPageContent() {
         {/* Wordmark + barriers removed badge — top of photo area */}
         <div style={{
           position: 'absolute',
-          top: 16,
+          top: 'calc(48px + env(safe-area-inset-top))',
           left: 0,
           right: 0,
           zIndex: 20,
